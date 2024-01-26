@@ -7,8 +7,6 @@ Public processing_row_num As Integer
 Public article_col_num As Integer
 Public vlookup_table_rng As Range
 Public cancel_flag As Boolean
-'Public working_wbook_name As Variant
-'Public working_sheet_name As Variant
 
 Sub highlight_codes_39()
 
@@ -545,9 +543,10 @@ Function VLookUp2( _
 'search_value: искомое значенике;
 'table_rng: таблица, диапазон ячеек, в которых ищутся совпадения и
 '                   результаты;
-'search_col_num: номер колонки в диапазоне ячеек [table_rng],
+'search_col_num: номер колонки, в диапазоне ячеек [table_rng],
 '                   в которой ищутся совпадения;
-'result_col_num: номер колонки, из которой извлекаются искомые данные;
+'result_col_num: номер колонки, в диапазоне ячеек [table_rng],
+'                   из которой извлекаются искомые данные;
 'match_num: номер совпадения значения (если совпадения множественные);
 
     Dim flg As Boolean
@@ -587,9 +586,10 @@ Function VLookUp3( _
 'search_value: искомое значение;
 'table_rng: Таблица, диапазон ячеек, в которых ищутся совпадения и
 '                   результаты;
-'search_col_num: номер колонки в диапазоне ячеек [table_rng],
-'                   в которой ищутся совпадения;
-'result_col_num: номер колонки, из которой извлекаются искомые данные;
+'search_col_num: номер колонки, в диапазоне ячеек [table_rng],
+'                   в которойищутся совпадения;
+'result_col_num: номер колонки, в диапазоне ячеек [table_rng],
+'                   из которой извлекаются искомые данные;
 'match_num: номер совпадения значения (если совпадения множественные);
 
     Dim flg As Boolean
@@ -629,10 +629,10 @@ Function VLookUp4( _
 'search_value: искомое значение;
 'table_rng: таблица, диапазон ячеек, в которых ищутся совпадения и
 '                   результаты;
-'search_col_num: номер колонки в диапазоне ячеек [table_rng],
+'search_col_num: номер колонки, в диапазоне ячеек [table_rng],
 '                   в которой ищутся совпадения;
-'result_col_num: номер колонки в диапазоне [table_rng], из которой
-'                   извлекаются искомые данные;
+'result_col_num: номер колонки, в диапазоне ячеек [table_rng],
+'                   из которой извлекаются искомые данные;
 'symbols_num: количество первых левых символов артикула (искомого
 '                   значения), по которым будут искаться совпадения.
 
@@ -688,7 +688,9 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Q\n14"
 'артикула по которым будет искться совпадения (число "от" и число "до").
 'Пользователь может настраивать их с помощью элементов управления -
 'spinbutton или непосредственно вводить числовые значения в текстовоые
-'поля.
+'поля. Т.е. "глубина" поиска совпадений по неполному артикулу может быть
+'больше 4 символов - количество символов "глубины" теперь настроиваемо,
+'его можно указывать произвольно в пользовательской форме.
 
 'Добавил функциональность чтобы процедура не обрабатывала скрытые или
 'отфильтрованные строки. Это будет востребовано при множественном
@@ -742,6 +744,15 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Q\n14"
     Dim t As Single
     Dim working_wbook_name As Variant
     Dim working_sheet_name As Variant
+    
+    Dim article_length As Integer
+    
+    Dim upper_ As Integer, lower_ As Integer
+'   контекстные значения верхнего и нижнего интервала символов для
+'   каждой строки выделенного интервала (в зависимости от длины
+'   артикула - т.е. для цикла "For counter2 <...>"), тогда как
+'   upper_interval, lower_interval это глобальные настройки для всего
+'   диапазона Selection, для всей процедуры;
 
 
     t = Timer
@@ -749,6 +760,9 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Q\n14"
     working_wbook_name = ActiveWorkbook.Name
     working_sheet_name = ActiveSheet.Name
 
+    
+    On Error Resume Next
+    
     Set article_col_rng = Application.InputBox("Введите колонку с признаком," _
                     & " по которому будем осуществлять поиск", _
                     "Ввод колонки с искомыми данными (артикулами)", Type:=8)
@@ -756,10 +770,15 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Q\n14"
 '    по умолчанию указывать на требуемую колонку с артикулом;
 '    диапазон может быть любым; главное чтобы левая верхняя ячейка
 '    (левая колонка) указывала на требуемые данные (артикулы).
-
+    If Err.Number <> 0 Then Set article_col_rng = ActiveCell.Offset(0, -1)
+    On Error GoTo -1
+    
     Set vlookup_table_rng = Application.InputBox("Введите диапазон откуда " _
                     & "требуется подгрузить данные", _
                     "Ввод диапазона (откуда будем получать данные)", Type:=8)
+    If Err.Number <> 0 Then Set vlookup_table_rng = ActiveCell.Offset(0, -1)
+    
+    On Error GoTo 0
 
     Windows(working_wbook_name).Activate
         
@@ -859,7 +878,20 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Q\n14"
         
         If IsError(hscode) Then ' = "#Н/Д" Then
         
-            For counter2 = upper_interval To lower_interval Step -1
+            article_length = Len(Cells(processing_row_num, article_col_num))
+            If article_length >= upper_interval Then
+                upper_ = upper_interval
+                lower_ = lower_interval
+            ElseIf article_length < upper_interval And _
+               article_length >= lower_interval Then
+               upper_ = article_length
+               lower_ = lower_interval
+            ElseIf article_length < lower_interval Then
+                upper_ = article_length
+                lower_ = article_length
+            End If
+
+            For counter2 = upper_ To lower_ Step -1
         
                 hscode = VLookUp4( _
                             Cells(processing_row_num, article_col_num), _
@@ -892,28 +924,28 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Q\n14"
                 If Not IsError(hscode) Then ' <> "#Н/Д" Then
                     
                     Select Case counter2
-                        Case upper_interval - 0
+                        Case upper_ - 0
                             Call paint_cells( _
                                              Selection.Columns.Count, _
                                              13819376, _
                                              counter1 _
                                             )
                             
-                        Case upper_interval - 1
+                        Case upper_ - 1
                             Call paint_cells( _
                                              Selection.Columns.Count, _
                                              11321572, _
                                              counter1 _
                                             )
                             
-                        Case upper_interval - 2
+                        Case upper_ - 2
                             Call paint_cells( _
                                              Selection.Columns.Count, _
                                              8823768, _
                                              counter1 _
                                             )
                             
-                        Case 1 To upper_interval - 3
+                        Case 1 To upper_ - 3
                             Call paint_cells( _
                                              Selection.Columns.Count, _
                                              4025277, _
@@ -921,6 +953,8 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Q\n14"
                                             )
                             
                     End Select
+'                   альтернативные заливки (оттенки зеленого):
+'                        14348258, 11854022, 9359529, 3506772, 2315831
                     
                     Exit For
                 End If
