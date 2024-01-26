@@ -13,9 +13,9 @@ Sub highlight_codes_39()
 
 'ПРИНЦИП работы.
 'Пользователь выделяет произвольную область рабочего листа.
-'В этой области могут быть любые данные: текст, числа, формулы,
-'пустые ячейки и т.д. Значение ячеек сравнивается с кодами из Перечня.
-'Если ячейка содержит код ТНВЭД из Перечня, такая ячейка выделяется
+'В этой области могут быть любые данные: текст, числа, формулы, пустые
+'ячейки и т.д. Значение ячеек сравнивается с кодами из Перечня. Если
+'ячейка содержит код ТНВЭД из Перечня, такая ячейка выделяется
 'контрастным форматированием. В дальнейшем используя это форматирование
 'можно фильтровать ячейки, обрабатыать их и т.д. Все остальные значения
 'выделенного диапазона игнорируются.
@@ -58,6 +58,13 @@ Sub highlight_codes_39()
 
 'Форматирование кодов, которы упоминаются в обоих перечнях - фиолетовый
 'фон, белый шрифт, двойная белая рамка вокруг ячейки.
+
+'Теперь процедура не обрабатывает скрытые (отфильтрованные) ячейки;
+'Также процедура не "спотыкается" на ячейках содержащих ошибку.
+'Ранее на ячейке с ошибкой возникало принудительное прерывание.
+'Обрабатывать можно не только одноколоночный диапазон ячеек, но и
+'произвольные несвязанные диапазоны ячеек.
+
 
     Dim rng As Range, cell As Range
     Dim arr_one As Variant, _
@@ -131,17 +138,23 @@ Sub highlight_codes_39()
                    "9504500002")
 
 '   With ActiveSheet.UsedRange
-    With Selection
-        a = .Value
-        .NumberFormat = "General"
-        .Value = a
-        .NumberFormat = "@"
-    End With
-
+    For Each cell In Selection
+        If Not cell.Rows.Hidden Then
+            With cell
+                a = .Value
+                .NumberFormat = "General"
+                .Value = a
+                .NumberFormat = "@"
+            End With
+        End If
+    Next
+    
     Set rng = Selection
 
     For Each cell In rng
 
+        If Not IsError(cell.Value) And _
+           Not cell.Rows.Hidden Then
         If IsInArray(arr_one, Left(cell.Value, 4)) Then
 
             cond_01 = IsInArray(arr_04, Left(cell.Value, 4))
@@ -175,6 +188,7 @@ Sub highlight_codes_39()
             End If
 
         End If
+        End If
 
     Next cell
 
@@ -187,8 +201,6 @@ Private Function IsInArray( _
                            arr As Variant, _
                            match_code As Variant _
                           ) As Boolean
-
-'    IsInArray = (UBound(Filter(arr, match_code)) > -1)
 
     IsInArray = False
 
@@ -257,17 +269,23 @@ Sub highlight_codes_342()
                       "9102190000", "9102910000", "9106100000", "9106900000" _
                       )
 
-    With Selection
-        a = .Value
-        .NumberFormat = "General"
-        .Value = a
-        .NumberFormat = "@"
-    End With
+    For Each cell In Selection
+        If Not cell.Rows.Hidden Then
+            With cell
+                a = .Value
+                .NumberFormat = "General"
+                .Value = a
+                .NumberFormat = "@"
+            End With
+        End If
+    Next
 
     Set rng = Selection
 
     For Each cell In rng
 
+        If Not IsError(cell.Value) And _
+           Not cell.Rows.Hidden Then
         If IsInArray(arr_342_position, Left(cell.Value, 4)) Then
 
             cond_08 = Left(cell.Value, 4) = var_342_04
@@ -295,7 +313,7 @@ Sub highlight_codes_342()
 
             End If
 
-
+        End If
         End If
 
     Next cell
@@ -421,17 +439,23 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
                       "9102190000", "9102910000", "9106100000", "9106900000" _
                       )
 
-    With Selection
-        a = .Value
-        .NumberFormat = "General"
-        .Value = a
-        .NumberFormat = "@"
-    End With
+    For Each cell In Selection
+        If Not cell.Rows.Hidden Then
+            With cell
+                a = .Value
+                .NumberFormat = "General"
+                .Value = a
+                .NumberFormat = "@"
+            End With
+        End If
+    Next
 
     Set rng = Selection
 
     For Each cell In rng
 
+        If Not IsError(cell.Value) And _
+           Not cell.Rows.Hidden Then
         If IsInArray(arr_one, Left(cell.Value, 4)) Or _
            IsInArray(arr_342_position, Left(cell.Value, 4)) Then
 
@@ -515,6 +539,7 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
             End Select
 
         End If
+        End If
 
     Next cell
 
@@ -543,25 +568,25 @@ Function VLookUp2( _
     Dim FLG As Boolean
     Dim i As Integer
     Dim iCount As Integer
-    
+
     FLG = False
-    
+
     For i = 1 To table_rng.Rows.Count
-        
+
         If table_rng.Cells(i, search_col_num) = search_value Then
             iCount = iCount + 1
         End If
-        
+
         If iCount = match_num Then
             VLookUp2 = table_rng.Cells(i, result_col_num)
             FLG = True
             Exit For
         End If
-    
+
     Next i
-    
+
     If FLG = False Then
-        VLookUp2 = CVErr(xlErrNA) ' "#Н/Д"
+        VLookUp2 = CVErr(xlErrNA)
     End If
 
 End Function
@@ -586,25 +611,25 @@ Function VLookUp3( _
     Dim FLG As Boolean
     Dim i As Integer
     Dim iCount As Integer
-    
+
     FLG = False
-    
+
     For i = 1 To table_rng.Rows.Count
-        
+
         If search_value Like table_rng.Cells(i, search_col_num) Then
             iCount = iCount + 1
         End If
-    
+
         If iCount = match_num Then
             VLookUp3 = table_rng.Cells(i, result_col_num)
             FLG = True
             Exit For
         End If
-    
+
     Next i
-    
+
     If FLG = False Then
-        VLookUp3 = CVErr(xlErrNA) ' "#Н/Д"
+        VLookUp3 = CVErr(xlErrNA)
     End If
 
 End Function
@@ -629,11 +654,11 @@ Function VLookUp4( _
 
     Dim FLG As Boolean
     Dim i As Integer
-    
+
     FLG = False
-    
+
     For i = 1 To table_rng.Rows.Count
-        
+
         If symbols_num = 0 Then
             If table_rng.Cells(i, search_col_num) = search_value Then
                 VLookUp4 = table_rng.Cells(i, result_col_num)
@@ -648,12 +673,11 @@ Function VLookUp4( _
                 Exit For
             End If
         End If
-            
-    
+
     Next i
-    
+
     If FLG = False Then
-        VLookUp4 = CVErr(xlErrNA) ' "#Н/Д"
+        VLookUp4 = CVErr(xlErrNA)
     End If
 
 End Function
