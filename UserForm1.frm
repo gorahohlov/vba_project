@@ -1,11 +1,11 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm1 
    Caption         =   "ѕоиск кодов “Ќ¬Ёƒ по частичному совпадению артикулов, аргументы:"
-   ClientHeight    =   4050
+   ClientHeight    =   5175
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   7920
-   OleObjectBlob   =   "UserForm1_2024-01-22.frx":0000
+   ClientWidth     =   7965
+   OleObjectBlob   =   "UserForm1_2024-01-23.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
 Attribute VB_Name = "UserForm1"
@@ -47,6 +47,20 @@ Private Sub UserForm_Initialize()
                         article_col_num _
                        ).Address(external:=True)
     Me.RefEdit2 = vlookup_table_rng.Address(external:=True)
+
+    If sel_col_num = 1 Then
+        Me.Label8.Enabled = False
+        Me.Label9.Enabled = False
+        Me.TextBox5.Enabled = False
+        Me.TextBox6.Enabled = False
+        Me.SpinButton5.Enabled = False
+        Me.SpinButton6.Enabled = False
+    ElseIf sel_col_num = 2 Then
+        Me.Label9.Enabled = False
+        Me.TextBox6.Enabled = False
+        Me.SpinButton6.Enabled = False
+    End If
+
 End Sub
 
 'Public Sub UserForm_Initialize( _
@@ -84,17 +98,69 @@ Private Sub SpinButton4_Change()
     TextBox4.Text = SpinButton4.Value
 End Sub
 
+Private Sub SpinButton5_Change()
+    TextBox5.Text = SpinButton5.Value
+End Sub
+
+Private Sub SpinButton6_Change()
+    TextBox6.Text = SpinButton6.Value
+End Sub
+
 Private Sub TextBox1_Change()
     On Error Resume Next
     SpinButton1.Value = Val(TextBox1.Text)
     TextBox1.Text = SpinButton1.Value
-    If Err.Number <> 0 Or TextBox1.Text = "" Then
-        MsgBox "«начение не может быть пустым." & vbCrLf _
-        & "¬ведите натуральное число не более 16384."
+    If Err.Number <> 0 Or _
+       TextBox1.Text = "" Or _
+       Val(TextBox1.Text) > Range(Me.RefEdit2.Text).Columns.Count Then
+        MsgBox "«начение не может быть пустым или превышать ширину " & _
+               "области »сточника данных." & vbCrLf & vbCrLf & _
+               "¬ведите натуральное число не более " & _
+                Range(Me.RefEdit2.Text).Columns.Count & "."
         TextBox1.SetFocus
-        TextBox1.Text = 9
+        TextBox1.Text = Range(Me.RefEdit2.Text).Columns.Count
         TextBox1.SelStart = 0
-        TextBox1.SelLength = 1
+        TextBox1.SelLength = Len(TextBox1.Text)
+        Exit Sub
+    End If
+    On Error GoTo 0
+End Sub
+
+Private Sub TextBox5_Change()
+    On Error Resume Next
+    SpinButton5.Value = Val(TextBox5.Text)
+    TextBox5.Text = SpinButton5.Value
+    If Err.Number <> 0 Or _
+       TextBox5.Text = "" Or _
+       Val(TextBox5.Text) > Range(Me.RefEdit2.Text).Columns.Count Then
+        MsgBox "«начение не может быть пустым или превышать ширину " & _
+               "области »сточника данных." & vbCrLf & vbCrLf & _
+               "¬ведите натуральное число не более " & _
+                Range(Me.RefEdit2.Text).Columns.Count & "."
+        TextBox5.SetFocus
+        TextBox5.Text = Range(Me.RefEdit2.Text).Columns.Count
+        TextBox5.SelStart = 0
+        TextBox5.SelLength = Len(TextBox5.Text)
+        Exit Sub
+    End If
+    On Error GoTo 0
+End Sub
+
+Private Sub TextBox6_Change()
+    On Error Resume Next
+    SpinButton6.Value = Val(TextBox6.Text)
+    TextBox6.Text = SpinButton6.Value
+    If Err.Number <> 0 Or _
+       TextBox6.Text = "" Or _
+       Val(TextBox6.Text) > Range(Me.RefEdit2.Text).Columns.Count Then
+        MsgBox "«начение не может быть пустым или превышать ширину " & _
+               "области »сточника данных." & vbCrLf & vbCrLf & _
+               "¬ведите натуральное число не более " & _
+                Range(Me.RefEdit2.Text).Columns.Count & "."
+        TextBox6.SetFocus
+        TextBox6.Text = Range(Me.RefEdit2.Text).Columns.Count
+        TextBox6.SelStart = 0
+        TextBox6.SelLength = Len(TextBox6.Text)
         Exit Sub
     End If
     On Error GoTo 0
@@ -104,13 +170,17 @@ Private Sub TextBox2_Change()
     On Error Resume Next
     SpinButton2.Value = Val(TextBox2.Text)
     TextBox2.Text = SpinButton2.Value
-    If Err.Number <> 0 Then
-        MsgBox "«начение не может быть пустым." & vbCrLf _
-                    & "¬ведите натуральное число не более 16384."
+    If Err.Number <> 0 Or _
+       TextBox2.Text = "" Or _
+       Val(TextBox2.Text) > Range(Me.RefEdit2.Text).Columns.Count Then
+        MsgBox "«начение не может быть пустым или превышать ширину " & _
+               "области »сточника данных." & vbCrLf & vbCrLf & _
+               "¬ведите натуральное число не более " & _
+                Range(Me.RefEdit2.Text).Columns.Count & "."
         TextBox2.SetFocus
-        TextBox2.Text = 1
+        TextBox2.Text = Range(Me.RefEdit2.Text).Columns.Count
         TextBox2.SelStart = 0
-        TextBox2.SelLength = 1
+        TextBox2.SelLength = Len(TextBox2.Text)
         Exit Sub
     End If
     On Error GoTo 0
@@ -168,6 +238,8 @@ Private Sub CommandButton1_Click()
     
     vlookup_arg3 = Val(Me.TextBox1.Text)
     vlookup_arg4 = Val(Me.TextBox2.Text)
+    vlookup_arg4_ver2 = Val(Me.TextBox5.Text)
+    vlookup_arg4_ver3 = Val(Me.TextBox6.Text)
     upper_interval = Val(Me.TextBox3.Text)
     lower_interval = Val(Me.TextBox4.Text)
     processing_row_num = Range(Me.RefEdit1.Text).Row
@@ -191,6 +263,57 @@ Private Sub CommandButton1_Click()
             RefEdit2.SelLength = Len(RefEdit2.Text)
         End If
         
+        Exit Sub
+    End If
+    
+    table_area_width = vlookup_table_rng.Columns.Count
+    If vlookup_arg3 > table_area_width Then
+        MsgBox "«начение не может быть больше ширины в области:" & _
+                vbCrLf & _
+               "<»сточник данных (диапазон): [" & _
+                Range(RefEdit2.Text).Address(external:=False) & "]>." & _
+                vbCrLf & vbCrLf & _
+               "¬ведите натуральное число от 1 до " & table_area_width & "."
+        TextBox1.Text = table_area_width
+        TextBox1.SetFocus
+        TextBox1.SelStart = 0
+        TextBox1.SelLength = Len(TextBox1.Text)
+        Exit Sub
+    ElseIf vlookup_arg4 > table_area_width Then
+        MsgBox "«начение не может быть больше ширины в области:" & _
+                vbCrLf & _
+               "<»сточник данных (диапазон): [" & _
+                Range(RefEdit2.Text).Address(external:=False) & "]>." & _
+                vbCrLf & vbCrLf & _
+               "¬ведите натуральное число от 1 до " & table_area_width & "."
+        TextBox2.Text = table_area_width
+        TextBox2.SetFocus
+        TextBox2.SelStart = 0
+        TextBox2.SelLength = Len(TextBox2.Text)
+        Exit Sub
+    ElseIf vlookup_arg4_ver2 > table_area_width And sel_col_num > 1 Then
+        MsgBox "«начение не может быть больше ширины в области:" & _
+                vbCrLf & _
+               "<»сточник данных (диапазон): [" & _
+                Range(RefEdit2.Text).Address(external:=False) & "]>." & _
+                vbCrLf & vbCrLf & _
+               "¬ведите натуральное число от 1 до " & table_area_width & "."
+        TextBox5.Text = table_area_width
+        TextBox5.SetFocus
+        TextBox5.SelStart = 0
+        TextBox5.SelLength = Len(TextBox5.Text)
+        Exit Sub
+    ElseIf vlookup_arg4_ver3 > table_area_width And sel_col_num > 2 Then
+        MsgBox "«начение не может быть больше ширины в области:" & _
+                vbCrLf & _
+               "<»сточник данных (диапазон): [" & _
+                Range(RefEdit2.Text).Address(external:=False) & "]>." & _
+                vbCrLf & vbCrLf & _
+               "¬ведите натуральное число от 1 до " & table_area_width & "."
+        TextBox6.Text = table_area_width
+        TextBox6.SetFocus
+        TextBox6.SelStart = 0
+        TextBox6.SelLength = Len(TextBox6.Text)
         Exit Sub
     End If
     

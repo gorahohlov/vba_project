@@ -58,7 +58,7 @@ Sub highlight_codes_39()
 
 'Форматирование кодов, которы упоминаются в обоих перечнях - фиолетовый
 'фон, белый шрифт, двойная белая рамка вокруг ячейки.
- 
+
     Dim rng As Range, cell As Range
     Dim arr_one As Variant, _
         arr_except As Variant, _
@@ -77,9 +77,9 @@ Sub highlight_codes_39()
         cond_07 As Boolean, _
         bool_01 As Boolean
     Dim t As Single
- 
+
     t = Timer
- 
+
     arr_one = Array("2204", "2710", "3403", "4011", "7321", "8414", _
                     "8415", "8418", "8421", "8422", "8423", "8427", _
                     "8429", "8430", "8443", "8450", "8452", "8467", _
@@ -89,31 +89,31 @@ Sub highlight_codes_39()
                     "8527", "8528", "8542", "8703", "8903", "9005", _
                     "9006", "9007", "9008", "9014", "9015", "9101", _
                     "9102", "9207", "9504")
-                 
+
     arr_except = Array("8476900000", "8515900000", "8516900000", _
                        "8518900003", "8518900005", "8518900008", _
                        "8526100001", "8526920001", "8527212001", _
                        "8527215201", "8527215901", "8527290001", _
                        "9005900000", "9008900000", "9014900000", _
                        "9015900000")
- 
+
     var_except = "851680"
- 
+
     arr_04 = Array("2204", "4011", "8423", "8427", "8429", "8470", "8471", _
                    "8472", "8476", "8515", "8516", "8518", "8519", "8521", _
                    "8523", "8525", "8526", "8527", "8528", "8542", "9005", _
                    "9008", "9014", "9015", "9101", "9102", "9207")
-               
+
     arr_06 = Array("732111", "841459", "841510", "841810", "841821", _
                    "841830", "841840", "841850", "844331", "844332", _
                    "844339", "845011", "845210", "846711", "846721", _
                    "846722", "846729", "890332", "890333")
-               
+
     arr_08 = Array("84158100", "85241100", "85249100")
- 
+
     arr_09 = Array("841460000", "841520000", "850819000", _
                    "851761000", "851762000", "900659000")
-               
+
     arr_10 = Array("2710197100", "2710197500", "2710198200", "2710198400", _
                    "2710198600", "2710198800", "2710199200", "2710199400", _
                    "2710199800", "2710209000", "3403191000", "3403199000", _
@@ -129,7 +129,7 @@ Sub highlight_codes_39()
                    "8903939900", "8903990000", "9006300000", "9006400000", _
                    "9007100000", "9007200000", "9504301000", "9504500001", _
                    "9504500002")
- 
+
 '   With ActiveSheet.UsedRange
     With Selection
         a = .Value
@@ -137,13 +137,13 @@ Sub highlight_codes_39()
         .Value = a
         .NumberFormat = "@"
     End With
-     
+
     Set rng = Selection
-     
+
     For Each cell In rng
-        
+
         If IsInArray(arr_one, Left(cell.Value, 4)) Then
-        
+
             cond_01 = IsInArray(arr_04, Left(cell.Value, 4))
             cond_02 = IsInArray(arr_06, Left(cell.Value, 6))
             cond_03 = IsInArray(arr_08, Left(cell.Value, 8))
@@ -151,13 +151,13 @@ Sub highlight_codes_39()
             cond_05 = IsInArray(arr_10, Left(cell.Value, 10))
             cond_06 = IsInArray(arr_except, Left(cell.Value, 10))
             cond_07 = Left(cell.Value, 6) = var_except
-        
+
             bool_01 = (cond_01 Or cond_02 Or cond_03 Or cond_04 Or cond_05) _
                       And _
                       (Not cond_06 And Not cond_07)
-        
+
             If bool_01 Then
-            
+
                 With cell.Font
                     .Name = "Cambria"
                     .FontStyle = "обычный"
@@ -171,16 +171,16 @@ Sub highlight_codes_39()
                 cell.Interior.ThemeColor = xlThemeColorLight1
                 cell.HorizontalAlignment = xlCenter
                 cell.VerticalAlignment = xlTop
-                
+
             End If
 
         End If
-    
+
     Next cell
- 
+
     t = Timer - t
     MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec"
- 
+
 End Sub
 
 Private Function IsInArray( _
@@ -189,20 +189,20 @@ Private Function IsInArray( _
                           ) As Boolean
 
 '    IsInArray = (UBound(Filter(arr, match_code)) > -1)
-  
+
     IsInArray = False
-    
+
     For Each Item In arr
         If Item = match_code Then
             IsInArray = True
             Exit For
         End If
     Next
-    
+
 End Function
 
 Sub highlight_codes_342()
-     
+
     Dim arr_342_position As Variant, _
         var_342_04 As Variant, _
         arr_342_06 As Variant, _
@@ -225,9 +225,9 @@ Sub highlight_codes_342()
                              "9024", "9025", "9026", "9027", "9028", "9029", _
                              "9030", "9031", "9032", "9101", "9102", "9104", _
                              "9106", "9504")
-    
+
     var_342_04 = "8471"
-        
+
     arr_342_06 = Array("844331", "844332", "847330", "847350", "851769", _
                        "851771", "851810", "851840", "851920", "851981", _
                        "851989", "852110", "852351", "852691", "852712", _
@@ -239,12 +239,12 @@ Sub highlight_codes_342()
                        "902519", "902580", "902610", "902620", "902680", _
                        "902710", "902790", "902830", "902920", "903020", _
                        "903033", "903089", "903149", "903180", "903210")
-                      
+
     arr_342_09 = Array("851761000", "851762000", "851822000", "852190000", _
                        "852560000", "852610000", "852692000", "852729000", _
                        "900659000", "900669000", "902910000", "903039000", _
                        "910400000", "950450000")
-    
+
     arr_342_10 = Array( _
                       "8517130000", "8517140000", "8518500000", "8519300000", _
                       "8527190000", "8527990000", "8528730000", "8544700000", _
@@ -263,22 +263,22 @@ Sub highlight_codes_342()
         .Value = a
         .NumberFormat = "@"
     End With
- 
+
     Set rng = Selection
-    
+
     For Each cell In rng
-        
+
         If IsInArray(arr_342_position, Left(cell.Value, 4)) Then
-        
+
             cond_08 = Left(cell.Value, 4) = var_342_04
             cond_09 = IsInArray(arr_342_06, Left(cell.Value, 6))
             cond_10 = IsInArray(arr_342_09, Left(cell.Value, 9))
             cond_11 = IsInArray(arr_342_10, Left(cell.Value, 10))
-            
+
             bool_02 = cond_08 Or cond_09 Or cond_10 Or cond_11
-            
+
             If bool_02 Then
-                
+
                 With cell.Font
                     .Name = "Cambria"
                     .FontStyle = "обычный"
@@ -292,17 +292,17 @@ Sub highlight_codes_342()
                 cell.Interior.Color = 10119167
                 cell.HorizontalAlignment = xlCenter
                 cell.VerticalAlignment = xlTop
-                
+
             End If
-            
-        
+
+
         End If
-               
+
     Next cell
-        
+
     t = Timer - t
     MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec"
-    
+
 End Sub
 
 Sub highlight_cells()
@@ -328,8 +328,8 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
         cond_10 As Boolean, cond_11 As Boolean, _
         bool_01 As Boolean, bool_02 As Boolean
     Dim t As Single, FLG As Single
-    
-    
+
+
     t = Timer
 
     arr_one = Array("2204", "2710", "3403", "4011", "7321", "8414", _
@@ -341,31 +341,31 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
                     "8527", "8528", "8542", "8703", "8903", "9005", _
                     "9006", "9007", "9008", "9014", "9015", "9101", _
                     "9102", "9207", "9504")
-                 
+
     arr_except = Array("8476900000", "8515900000", "8516900000", _
                        "8518900003", "8518900005", "8518900008", _
                        "8526100001", "8526920001", "8527212001", _
                        "8527215201", "8527215901", "8527290001", _
                        "9005900000", "9008900000", "9014900000", _
                        "9015900000")
- 
+
     var_except = "851680"
- 
+
     arr_04 = Array("2204", "4011", "8423", "8427", "8429", "8470", "8471", _
                    "8472", "8476", "8515", "8516", "8518", "8519", "8521", _
                    "8523", "8525", "8526", "8527", "8528", "8542", "9005", _
                    "9008", "9014", "9015", "9101", "9102", "9207")
-               
+
     arr_06 = Array("732111", "841459", "841510", "841810", "841821", _
                    "841830", "841840", "841850", "844331", "844332", _
                    "844339", "845011", "845210", "846711", "846721", _
                    "846722", "846729", "890332", "890333")
-               
+
     arr_08 = Array("84158100", "85241100", "85249100")
- 
+
     arr_09 = Array("841460000", "841520000", "850819000", _
                    "851761000", "851762000", "900659000")
-               
+
     arr_10 = Array("2710197100", "2710197500", "2710198200", "2710198400", _
                    "2710198600", "2710198800", "2710199200", "2710199400", _
                    "2710199800", "2710209000", "3403191000", "3403199000", _
@@ -381,7 +381,7 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
                    "8903939900", "8903990000", "9006300000", "9006400000", _
                    "9007100000", "9007200000", "9504301000", "9504500001", _
                    "9504500002")
-                    
+
     arr_342_position = Array("8443", "8471", "8473", "8517", "8518", "8519", _
                              "8521", "8523", "8525", "8526", "8527", "8528", _
                              "8531", "8536", "8544", "9006", "9007", "9008", _
@@ -389,9 +389,9 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
                              "9024", "9025", "9026", "9027", "9028", "9029", _
                              "9030", "9031", "9032", "9101", "9102", "9104", _
                              "9106", "9504")
-    
+
     var_342_04 = "8471"
-        
+
     arr_342_06 = Array("844331", "844332", "847330", "847350", "851769", _
                        "851771", "851810", "851840", "851920", "851981", _
                        "851989", "852110", "852351", "852691", "852712", _
@@ -403,12 +403,12 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
                        "902519", "902580", "902610", "902620", "902680", _
                        "902710", "902790", "902830", "902920", "903020", _
                        "903033", "903089", "903149", "903180", "903210")
-                      
+
     arr_342_09 = Array("851761000", "851762000", "851822000", "852190000", _
                        "852560000", "852610000", "852692000", "852729000", _
                        "900659000", "900669000", "902910000", "903039000", _
                        "910400000", "950450000")
-    
+
     arr_342_10 = Array( _
                       "8517130000", "8517140000", "8518500000", "8519300000", _
                       "8527190000", "8527990000", "8528730000", "8544700000", _
@@ -420,21 +420,21 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
                       "9032810000", "9032890000", "9101910000", "9102120000", _
                       "9102190000", "9102910000", "9106100000", "9106900000" _
                       )
-    
+
     With Selection
         a = .Value
         .NumberFormat = "General"
         .Value = a
         .NumberFormat = "@"
     End With
-     
+
     Set rng = Selection
-     
+
     For Each cell In rng
-    
+
         If IsInArray(arr_one, Left(cell.Value, 4)) Or _
            IsInArray(arr_342_position, Left(cell.Value, 4)) Then
-    
+
             cond_01 = IsInArray(arr_04, Left(cell.Value, 4))
             cond_02 = IsInArray(arr_06, Left(cell.Value, 6))
             cond_03 = IsInArray(arr_08, Left(cell.Value, 8))
@@ -442,25 +442,25 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
             cond_05 = IsInArray(arr_10, Left(cell.Value, 10))
             cond_06 = IsInArray(arr_except, Left(cell.Value, 10))
             cond_07 = Left(cell.Value, 6) = var_except
-            
+
             bool_01 = (cond_01 Or cond_02 Or cond_03 Or cond_04 Or cond_05) _
                       And _
                       (Not cond_06 And Not cond_07)
-    
+
             cond_08 = Left(cell.Value, 4) = var_342_04
             cond_09 = IsInArray(arr_342_06, Left(cell.Value, 6))
             cond_10 = IsInArray(arr_342_09, Left(cell.Value, 9))
             cond_11 = IsInArray(arr_342_10, Left(cell.Value, 10))
-            
+
             bool_02 = cond_08 Or cond_09 Or cond_10 Or cond_11
-            
+
             FLG = IIf(bool_01 = True And bool_02 = False, 1, _
                     IIf(bool_01 = False And bool_02 = True, 2, _
                         IIf(bool_01 = True And bool_02 = True, 3, 0)))
-    
+
             Select Case FLG
                 Case 1
-                    
+
                     With cell.Font
                         .Name = "Cambria"
                         .FontStyle = "обычный"
@@ -475,9 +475,9 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
                     cell.Interior.ThemeColor = xlThemeColorLight1
                     cell.HorizontalAlignment = xlCenter
                     cell.VerticalAlignment = xlTop
-                
+
                 Case 2
-                    
+
                     With cell.Font
                         .Name = "Cambria"
                         .FontStyle = "обычный"
@@ -494,9 +494,9 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
                     cell.Interior.Color = vbYellow
                     cell.HorizontalAlignment = xlCenter
                     cell.VerticalAlignment = xlTop
-                
+
                 Case 3
-                
+
                     With cell.Font
                         .Name = "Cambria"
                         .FontStyle = "обычный"
@@ -511,13 +511,13 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
                     cell.Interior.Color = RGB(147, 75, 201)
                     cell.HorizontalAlignment = xlCenter
                     cell.VerticalAlignment = xlTop
-              
+
             End Select
-            
+
         End If
-    
+
     Next cell
-        
+
     t = Timer - t
     MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec"
 
@@ -534,9 +534,10 @@ Function VLookUp2( _
 'search_value: искомое значение;
 'table_rng: таблица, диапазон ячеек, в которых ищутся совпадения и
 '                   результаты;
-'search_col_num: номер колонки в диапазоне ячеек [table_rng],
+'search_col_num: номер колонки, в диапазоне ячеек [table_rng],
 '                   в которой ищутся совпадения;
-'result_col_num: номер колонки, из которой извлекаются искомые данные;
+'result_col_num: номер колонки,  в диапазоне ячеек [table_rng],
+'                   из которой извлекаются искомые данные;
 'match_num: номер совпадения значения (если совпадения множественные);
 
     Dim FLG As Boolean
@@ -576,9 +577,10 @@ Function VLookUp3( _
 'search_value: искомое значение;
 'table_rng: Таблица, диапазон ячеек, в которых ищутся совпадения и
 '                   результаты;
-'search_col_num: номер колонки в диапазоне ячеек [table_rng],
+'search_col_num: номер колонки, в диапазоне ячеек [table_rng],
 '                   в которой ищутся совпадения;
-'result_col_num: номер колонки, из которой извлекаются искомые данные;
+'result_col_num: номер колонки, в диапазоне ячеек [table_rng],
+'                   из которой извлекаются искомые данные;
 'match_num: номер совпадения значения (если совпадения множественные);
 
     Dim FLG As Boolean
@@ -618,11 +620,12 @@ Function VLookUp4( _
 'search_value: искомое значение;
 'table_rng: таблица, диапазон ячеек, в которых ищутся совпадения и
 '                   результаты;
-'search_col_num: номер колонки в диапазоне ячеек [table_rng],
+'search_col_num: номер колонки, в диапазоне ячеек [table_rng],
 '                   в которой ищутся совпадения;
-'result_col_num: номер колонки, из которой извлекаются искомые данные;
-'symbols_num: количество первых левых символов артикула,
-'                   по которым будут искаться совпадения.
+'result_col_num: номер колонки, в диапазоне ячеек [table_rng],
+'                   из которой извлекаются искомые данные;
+'symbols_num: количество первых левых символов исходного значения
+'                   (артикула), по которым будут искаться совпадения.
 
     Dim FLG As Boolean
     Dim i As Integer
@@ -656,6 +659,8 @@ Function VLookUp4( _
 End Function
 
 Sub partial_match()
+
+'ПЕРВЫЙ ВАРИАНТ ПРОЦЕДУРЫ. АКТУАЛЬНАЯ ВЕРСИЯ В ФАЙЛЕ PERSONAL.XLSB
 
 'Процедура поиска и подтягиваня значений по частичному совпадению
 'артикула. По сути это несколько измененная функциональность функции
@@ -907,6 +912,9 @@ Sub partial_match()
     t = Timer - t
     MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec"
 
+
+'ПОДХОДЫ К НАПИСАНИЮ ПРОЦЕДУРЫ
+
 'Первый вариант: Использование метода Application.Inputbox
 'для ввода формулы
 '        ActiveCell = Application.InputBox(prompt:= _
@@ -950,6 +958,9 @@ Function custom_toll( _
                      Optional currency_rate As Single = 1, _
                      Optional msg_flag As Boolean = False _
                     ) As Variant
+
+
+'ЭТО АКТУАЛЬНАЯ ВЕРСИЯ ФУНКЦИИ (В ФАЙЛЕ my_funcs.xlam).
 
 'Назначение формулы.
 'Эта функция подсчитывает сумму  таможенных сборов в зависимости от
@@ -1117,7 +1128,7 @@ Function custom_toll( _
 
 End Function
 
-Public Sub нумерация_ячеек()
+Public Sub cells_numbering()
 
 'Процедура позволяет нумеровать строки диапазона, в котором некоторые
 'строки скрыты (отфильтрованы).
