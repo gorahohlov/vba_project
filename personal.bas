@@ -11,7 +11,7 @@ Public vlookup_table_rng As Range
 Public cancel_flag As Boolean
 Public sel_col_num As Integer
 
-Sub highlight_codes_39()
+Sub подсветить_коды_39()
 
 'Данный макрос предназначен для выделения ячеек с кодами ТН ВЭД
 '(10 знаков), которые попадают в Перечень товаров, которые должны
@@ -223,7 +223,7 @@ Private Function IsInArray( _
 
 End Function
 
-Sub highlight_codes_342()
+Sub подсветить_коды_342()
 
     Dim arr_342_position As Variant, _
         var_342_04 As Variant, _
@@ -334,8 +334,8 @@ Sub highlight_codes_342()
 
 End Sub
 
-Sub highlight_cells()
-Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
+Sub подсветить_ячейки()
+Attribute подсветить_ячейки.VB_ProcData.VB_Invoke_Func = "q\n14"
 
     Dim rng As Range, cell As Range
     Dim arr_one As Variant, _
@@ -557,8 +557,8 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
 
 End Sub
 
-Sub partial_match()
-Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
+Sub ПОИСК_ЧАСТИЧН()
+Attribute ПОИСК_ЧАСТИЧН.VB_ProcData.VB_Invoke_Func = "Й\n14"
 
 'Процедура поиска и подтягиваня значений по частичному
 'совпадению артикула. По сути это несколько измененная функциональность
@@ -752,7 +752,7 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
         rw_num = Application.WorksheetFunction.RoundUp(counter1 _
                                         / Selection.Columns.Count, 0)
         If Not Selection.Rows(rw_num).Hidden Then
-        hscode = VLookUp4( _
+        hscode = ВПР4( _
                         Cells(processing_row_num, article_col_num), _
                         vlookup_table_rng, _
                         vlookup_arg3, _
@@ -761,7 +761,7 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
                         )
         If Not IsError(hscode) And sel_col_num > 1 Then
             description_31 = LCase( _
-                        VLookUp4( _
+                        ВПР4( _
                             Cells(processing_row_num, article_col_num), _
                             vlookup_table_rng, _
                             vlookup_arg3, _
@@ -770,7 +770,7 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
                                   )
             If sel_col_num > 2 Then
                 description_art = LCase( _
-                        VLookUp4( _
+                        ВПР4( _
                             Cells(processing_row_num, article_col_num), _
                             vlookup_table_rng, _
                             vlookup_arg3, _
@@ -799,7 +799,7 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
             End If
 
             For counter2 = upper_ To lower_ Step -1
-                hscode = VLookUp4( _
+                hscode = ВПР4( _
                             Cells(processing_row_num, article_col_num), _
                             vlookup_table_rng, _
                             vlookup_arg3, _
@@ -809,7 +809,7 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
                 
                 If Not IsError(hscode) And sel_col_num > 1 Then
                     description_31 = LCase( _
-                        VLookUp4( _
+                        ВПР4( _
                                 Cells(processing_row_num, article_col_num), _
                                 vlookup_table_rng, _
                                 vlookup_arg3, _
@@ -819,7 +819,7 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
                                           )
                     If sel_col_num > 2 Then
                         description_art = LCase( _
-                            VLookUp4( _
+                            ВПР4( _
                                 Cells(processing_row_num, article_col_num), _
                                 vlookup_table_rng, _
                                 vlookup_arg3, _
@@ -837,6 +837,7 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
                     Select Case counter2
 '                       альтернативные заливки (оттенки коричневого):
 '                       13819376, 11321572, 08823768, 04025277
+
 '                       альтернативные заливки (оттенки зеленого):
 '                       14348258, 11854022, 09359529, 03506772, 02315831
                         Case upper_ - 0
@@ -951,7 +952,7 @@ Private Sub paint_cells( _
 
 End Sub
 
-Public Sub cells_numbering()
+Public Sub нумерация_ячеек()
 
 'Процедура позволяет нумеровать строки диапазона, в котором некоторые
 'строки скрыты (отфильтрованы). Нумерация производится только

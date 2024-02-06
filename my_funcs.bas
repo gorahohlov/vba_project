@@ -1,6 +1,6 @@
 Attribute VB_Name = "Module1"
 
-Function VLookUp2( _
+Function ВПР2( _
                   search_value As Variant, _
                   table_rng As Range, _
                   search_col_num As Integer, _
@@ -30,7 +30,7 @@ Function VLookUp2( _
         End If
 
         If iCount = match_num Then
-            VLookUp2 = table_rng.Cells(i, result_col_num)
+            ВПР2 = table_rng.Cells(i, result_col_num)
             FLG = True
             Exit For
         End If
@@ -38,12 +38,12 @@ Function VLookUp2( _
     Next i
 
     If FLG = False Then
-        VLookUp2 = CVErr(xlErrNA)
+        ВПР2 = CVErr(xlErrNA)
     End If
 
 End Function
 
-Function VLookUp3( _
+Function ВПР3( _
                   search_value As Variant, _
                   table_rng As Range, _
                   search_col_num As Integer, _
@@ -73,7 +73,7 @@ Function VLookUp3( _
         End If
 
         If iCount = match_num Then
-            VLookUp3 = table_rng.Cells(i, result_col_num)
+            ВПР3 = table_rng.Cells(i, result_col_num)
             FLG = True
             Exit For
         End If
@@ -81,12 +81,12 @@ Function VLookUp3( _
     Next i
 
     If FLG = False Then
-        VLookUp3 = CVErr(xlErrNA)
+        ВПР3 = CVErr(xlErrNA)
     End If
 
 End Function
 
-Function VLookUp4( _
+Function ВПР4( _
                   search_value As Variant, _
                   table_rng As Range, _
                   search_col_num As Integer, _
@@ -113,14 +113,14 @@ Function VLookUp4( _
 
         If symbols_num = 0 Then
             If table_rng.Cells(i, search_col_num) = search_value Then
-                VLookUp4 = table_rng.Cells(i, result_col_num)
+                ВПР4 = table_rng.Cells(i, result_col_num)
                 FLG = True
                 Exit For
             End If
         Else
             If Left(table_rng.Cells(i, search_col_num), symbols_num) = _
                                     Left(search_value, symbols_num) Then
-                VLookUp4 = table_rng.Cells(i, result_col_num)
+                ВПР4 = table_rng.Cells(i, result_col_num)
                 FLG = True
                 Exit For
             End If
@@ -129,12 +129,12 @@ Function VLookUp4( _
     Next i
 
     If FLG = False Then
-        VLookUp4 = CVErr(xlErrNA)
+        ВПР4 = CVErr(xlErrNA)
     End If
 
 End Function
 
-Function custom_toll( _
+Function ТАМ_СТОИМ( _
                      custom_sum As Variant, _
                      Optional currency_rate As Single = 1, _
                      Optional msg_flag As Boolean = False _
@@ -216,59 +216,59 @@ Function custom_toll( _
         msg_string = "Функции передан неверный тип данных; " _
                       & vbCrLf & _
                      "Аргумент ссылается на дату!"
-        custom_toll = CVErr(xlErrValue)
+        ТАМ_СТОИМ = CVErr(xlErrValue)
     ElseIf bool_1 Then
         msg_string = "Функции передан неверный тип данных; " _
                       & vbCrLf & _
                      "Аргумент ссылается на логическое значение!"
-        custom_toll = CVErr(xlErrValue)
+        ТАМ_СТОИМ = CVErr(xlErrValue)
     ElseIf Application.WorksheetFunction.IsText(custom_sum) Then
         msg_string = "Функции передан неверный тип данных; " _
                       & vbCrLf & _
                      "Аргумент ссылается на строковое значение (текст)!"
-        custom_toll = CVErr(xlErrValue)
+        ТАМ_СТОИМ = CVErr(xlErrValue)
     ElseIf bool_2 Then
         msg_string = "Функции передано неизвестное или удаленное имя:" _
                       & vbCrLf & _
                      "неверный именованный диапазон или ссылка на ячейку;" _
                       & vbCrLf & _
                       "Ошибка синтаксиса. Проверьте введенные данные."
-        custom_toll = CVErr(xlErrName)
+        ТАМ_СТОИМ = CVErr(xlErrName)
     ElseIf custom_sum < 0 Or currency_rate < 0 Then
         msg_string = "Таможенная стоимость или курс валюты не может " & _
                      "быть отрицательным числом. " & vbCrLf & _
                      "Проверьте переданные функции аргументы."
-        custom_toll = CVErr(xlErrNum)
+        ТАМ_СТОИМ = CVErr(xlErrNum)
     ElseIf currency_rate = 0 Then
         msg_string = "В формуле предпринята попытка деления на ноль." _
                       & vbCrLf & _
                       "Проверьте аргументы и ссылки переданные в формулу!"
-        custom_toll = CVErr(xlErrDiv0)
+        ТАМ_СТОИМ = CVErr(xlErrDiv0)
     ElseIf custom_sum_ru >= 0 And _
            IsNumeric(custom_sum_ru) And _
            custom_sum_ru <> "" Then
             If custom_sum_ru >= 0 And custom_sum_ru <= 200000 Then
-                custom_toll = 775 / currency_rate
+                ТАМ_СТОИМ = 775 / currency_rate
             ElseIf custom_sum_ru > 200000 And custom_sum_ru <= 450000 Then
-                custom_toll = 1550 / currency_rate
+                ТАМ_СТОИМ = 1550 / currency_rate
             ElseIf custom_sum_ru > 450000 And custom_sum_ru <= 1200000 Then
-                custom_toll = 3100 / currency_rate
+                ТАМ_СТОИМ = 3100 / currency_rate
             ElseIf custom_sum_ru > 1200000 And custom_sum_ru <= 2700000 Then
-                custom_toll = 8530 / currency_rate
+                ТАМ_СТОИМ = 8530 / currency_rate
             ElseIf custom_sum_ru > 2700000 And custom_sum_ru <= 4200000 Then
-                custom_toll = 12000 / currency_rate
+                ТАМ_СТОИМ = 12000 / currency_rate
             ElseIf custom_sum_ru > 4200000 And custom_sum_ru <= 5500000 Then
-                custom_toll = 15500 / currency_rate
+                ТАМ_СТОИМ = 15500 / currency_rate
             ElseIf custom_sum_ru > 5500000 And custom_sum_ru <= 7000000 Then
-                custom_toll = 20000 / currency_rate
+                ТАМ_СТОИМ = 20000 / currency_rate
             ElseIf custom_sum_ru > 7000000 And custom_sum_ru <= 8000000 Then
-                custom_toll = 23000 / currency_rate
+                ТАМ_СТОИМ = 23000 / currency_rate
             ElseIf custom_sum_ru > 8000000 And custom_sum_ru <= 9000000 Then
-                custom_toll = 25000 / currency_rate
+                ТАМ_СТОИМ = 25000 / currency_rate
             ElseIf custom_sum_ru > 9000000 And custom_sum_ru <= 10000000 Then
-                custom_toll = 27000 / currency_rate
+                ТАМ_СТОИМ = 27000 / currency_rate
             ElseIf custom_sum_ru > 10000000 Then
-                custom_toll = 30000 / currency_rate
+                ТАМ_СТОИМ = 30000 / currency_rate
             End If
     Else
         msg_string = "Неверный тип данных. " _
@@ -276,11 +276,11 @@ Function custom_toll( _
                      "Формуле передан некорректный аргумент. " _
                       & vbCrLf & _
                      "Проверьте данные, на которые ссылается формула!"
-        custom_toll = CVErr(xlErrValue)
+        ТАМ_СТОИМ = CVErr(xlErrValue)
     End If
 
-    If TypeName(custom_toll) <> "Error" Then _
-        custom_toll = Round(custom_toll, 2)
+    If TypeName(ТАМ_СТОИМ) <> "Error" Then _
+        ТАМ_СТОИМ = Round(ТАМ_СТОИМ, 2)
     
     If msg_string <> "" And msg_flag Then MsgBox msg_string
 
