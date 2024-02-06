@@ -5,7 +5,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserForm1
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   7965
-   OleObjectBlob   =   "UserForm1_2024-02-06.frx":0000
+   OleObjectBlob   =   "UserForm1_2024-02-07.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
 Attribute VB_Name = "UserForm1"
@@ -62,20 +62,6 @@ Private Sub UserForm_Initialize()
     End If
 
 End Sub
-
-'Public Sub UserForm_Initialize( _
-'                                proc_row_num, _
-'                                arti_col_num, _
-'                                tabl_rng _
-'                               )
-'
-'    Me.RefEdit1 = Cells( _
-'                        proc_row_num, _
-'                        arti_col_num _
-'                       ).Address(external:=True)
-'    Me.RefEdit2 = tabl_rng.Address(external:=True)
-'
-'End Sub
 
 Private Sub SpinButton1_Change()
     TextBox1.Text = SpinButton1.Value
@@ -203,10 +189,6 @@ Private Sub TextBox3_Change()
         TextBox3.SelLength = 2
         Exit Sub
     End If
-'    If SpinButton3.Value < SpinButton4.Value Then
-'        SpinButton4.Value = Val(TextBox3.Text)
-'        TextBox4.Text = TextBox3.Text
-'    End If
     On Error GoTo 0
 End Sub
 
@@ -244,7 +226,7 @@ Private Sub CommandButton1_Click()
     lower_interval = Val(Me.TextBox4.Text)
     processing_row_num = Range(Me.RefEdit1.Text).Row
     article_col_num = Range(Me.RefEdit1.Text).Column
-    Set vlookup_table_rng = Range(Me.RefEdit2.Text) '.Address(external:=True)
+    Set vlookup_table_rng = Range(Me.RefEdit2.Text)
     
     If Err.Number <> 0 Then
         MsgBox "Невалидный или пустой диапазон. Введите ссылку на диапазон."

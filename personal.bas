@@ -148,7 +148,6 @@ Sub highlight_codes_39()
                    "9007100000", "9007200000", "9504301000", "9504500001", _
                    "9504500002")
 
-'   With ActiveSheet.UsedRange
     For Each cell In Selection
         If Not cell.Rows.Hidden Then
             With cell
@@ -238,6 +237,7 @@ Sub highlight_codes_342()
         bool_02 As Boolean
     Dim rng As Range, cell As Range
     Dim t As Single
+
 
     t = Timer
 
@@ -519,12 +519,10 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
                         .Size = 9
                         .Bold = True
                         .ColorIndex = xlAutomatic
-'                        .ThemeColor = xlThemeColorDark1
                     End With
                     With cell.Borders
                         .LineStyle = xlDouble
                         .Color = vbBlack
-'                        .Weight = xlThick
                     End With
                     cell.Interior.Color = vbYellow
                     cell.HorizontalAlignment = xlCenter
@@ -558,140 +556,6 @@ Attribute highlight_cells.VB_ProcData.VB_Invoke_Func = "q\n14"
     MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec"
 
 End Sub
-
-Function VLookUp2( _
-                  search_value As Variant, _
-                  table_rng As Range, _
-                  search_col_num As Integer, _
-                  result_col_num As Integer, _
-                  match_num As Integer _
-                 )
-
-'search_value: искомое значенике;
-'table_rng: таблица, диапазон ячеек, в которых ищутся совпадения и
-'                   результаты;
-'search_col_num: номер колонки, в диапазоне ячеек [table_rng],
-'                   в которой ищутся совпадения;
-'result_col_num: номер колонки, в диапазоне ячеек [table_rng],
-'                   из которой извлекаются искомые данные;
-'match_num: номер совпадения значения (если совпадения множественные);
-
-    Dim flg As Boolean
-    Dim i As Integer
-    Dim iCount As Integer
-
-    flg = False
-
-    For i = 1 To table_rng.Rows.Count
-
-        If table_rng.Cells(i, search_col_num) = search_value Then
-            iCount = iCount + 1
-        End If
-
-        If iCount = match_num Then
-            VLookUp2 = table_rng.Cells(i, result_col_num)
-            flg = True
-            Exit For
-        End If
-
-    Next i
-
-    If flg = False Then
-        VLookUp2 = CVErr(xlErrNA)
-    End If
-
-End Function
-
-Function VLookUp3( _
-                  search_value As Variant, _
-                  table_rng As Range, _
-                  search_col_num As Integer, _
-                  result_col_num As Integer, _
-                  match_num As Integer _
-                 )
-
-'search_value: искомое значение;
-'table_rng: Таблица, диапазон ячеек, в которых ищутся совпадения и
-'                   результаты;
-'search_col_num: номер колонки, в диапазоне ячеек [table_rng],
-'                   в которойищутся совпадения;
-'result_col_num: номер колонки, в диапазоне ячеек [table_rng],
-'                   из которой извлекаются искомые данные;
-'match_num: номер совпадения значения (если совпадения множественные);
-
-    Dim flg As Boolean
-    Dim i As Integer
-    Dim iCount As Integer
-
-    flg = False
-
-    For i = 1 To table_rng.Rows.Count
-
-        If search_value Like table_rng.Cells(i, search_col_num) Then
-            iCount = iCount + 1
-        End If
-
-        If iCount = match_num Then
-            VLookUp3 = table_rng.Cells(i, result_col_num)
-            flg = True
-            Exit For
-        End If
-
-    Next i
-
-    If flg = False Then
-        VLookUp3 = CVErr(xlErrNA)
-    End If
-
-End Function
-
-Function VLookUp4( _
-                  search_value As Variant, _
-                  table_rng As Range, _
-                  search_col_num As Integer, _
-                  result_col_num As Integer, _
-                  Optional symbols_num As Integer = 0 _
-                 )
-
-'search_value: искомое значение;
-'table_rng: таблица, диапазон ячеек, в которых ищутся совпадения и
-'                   результаты;
-'search_col_num: номер колонки, в диапазоне ячеек [table_rng],
-'                   в которой ищутся совпадения;
-'result_col_num: номер колонки, в диапазоне ячеек [table_rng],
-'                   из которой извлекаются искомые данные;
-'symbols_num: количество первых левых символов артикула (искомого
-'                   значения), по которым будут искаться совпадения.
-
-    Dim flg As Boolean
-    Dim i As Integer
-
-    flg = False
-
-    For i = 1 To table_rng.Rows.Count
-
-        If symbols_num = 0 Then
-            If table_rng.Cells(i, search_col_num) = search_value Then
-                VLookUp4 = table_rng.Cells(i, result_col_num)
-                flg = True
-                Exit For
-            End If
-        Else
-            If Left(table_rng.Cells(i, search_col_num), symbols_num) = _
-                                    Left(search_value, symbols_num) Then
-                VLookUp4 = table_rng.Cells(i, result_col_num)
-                flg = True
-                Exit For
-            End If
-        End If
-
-    Next i
-
-    If flg = False Then
-        VLookUp4 = CVErr(xlErrNA)
-    End If
-
-End Function
 
 Sub partial_match()
 Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
@@ -836,19 +700,7 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
 '(Visual Basic Editor). Подробнее напишу позже.
 
 
-'    Dim rng  As Range
     Dim article_col_rng As Range
-
-'    переопределил эти переменные как глобальные чтобы передавать
-'    их значения в модуль кода пользовательской формы UserForm1:
-'    Dim vlookup_arg3 As Integer, _
-         vlookup_arg4 As Integer, _
-'        upper_interval As Integer, _
-'        lower_interval As Integer
-'    Dim processing_row_num As Integer, _
-'        article_col_num As Integer
-'    Dim vlookup_table_rng As Range
-    
     Dim counter1 As Long
     Dim counter2 As Integer
     Dim hscode As Variant, _
@@ -857,15 +709,8 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
     Dim t As Single
     Dim working_wbook_name As Variant
     Dim working_sheet_name As Variant
-    
     Dim article_length As Integer
-    
     Dim upper_ As Integer, lower_ As Integer
-'   контекстные значения верхнего и нижнего интервала символов для
-'   каждой строки выделенного интервала (в зависимости от длины
-'   артикула - т.е. для цикла "For counter2 <...>"), тогда как
-'   upper_interval, lower_interval это глобальные настройки для всего
-'   диапазона Selection, для всей процедуры;
 
 
     working_wbook_name = ActiveWorkbook.Name
@@ -876,10 +721,6 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
     Set article_col_rng = Application.InputBox("Введите колонку с признаком," _
                     & " по которому будем осуществлять поиск", _
                     "Ввод колонки с искомыми данными (артикулами)", Type:=8)
-'    первая (левая верхняя) ячейка выделенного диапазона будет
-'    по умолчанию указывать на требуемую колонку с артикулом;
-'    диапазон может быть любым; главное чтобы левая верхняя ячейка
-'    (левая колонка) указывала на требуемые данные (артикулы).
     If Err.Number <> 0 Then Set article_col_rng = ActiveCell.Offset(0, -1)
     On Error GoTo -1
     
@@ -896,15 +737,6 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
     article_col_num = article_col_rng.Column
     sel_col_num = Selection.Columns.Count
     
-'   Ниже тупиковая ветвь "эволюции" процедуры. Пробовал передавать
-'   параметры для пользовательской формы через аргументы процедуры
-'   Инициализации;
-'   В итоге решил передавать параметны через глобальные переменные.
-'   Call UserForm1.UserForm_Initialize( _
-                                       processing_row_num, _
-                                       article_col_num, _
-                                       vlookup_table_rng _
-                                      )
     UserForm1.Show
     
     Workbooks(working_wbook_name).Sheets(working_sheet_name).Activate
@@ -1003,6 +835,10 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
         
                 If Not IsError(hscode) Then
                     Select Case counter2
+'                       альтернативные заливки (оттенки коричневого):
+'                       13819376, 11321572, 08823768, 04025277
+'                       альтернативные заливки (оттенки зеленого):
+'                       14348258, 11854022, 09359529, 03506772, 02315831
                         Case upper_ - 0
                             Call paint_cells( _
                                              Selection.Columns.Count, _
@@ -1035,12 +871,6 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
                                             )
                     End Select
 
-'                   альтернативные заливки (оттенки коричневого):
-'                        13819376, 11321572, 08823768, 04025277
-
-'                   альтернативные заливки (оттенки зеленого):
-'                        14348258, 11854022, 09359529, 03506772, 02315831
-
                     Exit For
                 End If
         
@@ -1063,56 +893,6 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
     t = Timer - t
     MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec"
     
-
-'ПОДХОДЫ К НАПИСАНИЮ ПРОЦЕДУРЫ
-'---
-
-'Первый вариант: Использование метода Application.Inputbox
-'для ввода формулы:
-'   ActiveCell = Application.InputBox(prompt:= _
-                "Введите формулу: _
-    VLookUp2(SearchValue;Table;SearchColNum;ResultColNum;match_num)", _
-                 Title:="Ввод формулы", Default:="=VLookUp2()", Type:=0)
-'после ввода формулы без аргументов, можно войти в ячейку и вызвать
-'с помощью Shift+F3 - окно "Аргументы функции" для заполнения
-'её аргументов;
-
-'Второй вариант: использовния диалогового окна мастера функций:
-'            Application.CommandBars.ExecuteMso "FunctionWizard"
-
-'Третий вариант: запросить все параметры для функции VLookUp
-'с помощью нескольких методов Application.InputBox
-
-
-'ActiveCell.FormulaLocal = "=VLookUp3()"
-'далее Shift+F3 - вызов диалогового окна "Аргументы функции"
-
-'или
-
-'ActiveCell.FormulaLocal = "=VLookUp3("
-'далее Ctrl+A для вызова диалога "Аргументы функции"
-
-'или
-
-'ActiveCell = Application.InputBox( _
-             prompt:="Введите формулу: VLookUp2(SearchValue;<...>)", _
-             Title:="Ввод формулы", _
-             Default:="=VLookUp2()", _
-             Type:=0 _
-             )
-'далее Enter и Shift+F3 для вызова диалога "Аргументы функции"
-
-'Set Rng1 = Application.InputBox("Введите колонку с признаком по " & _
-                                "которому будем осуществлять поиск", _
-                                "Ввод колонки", _
-                                 Type:=8)
-'Print Rng1.Column
-
-'Set Rgn2 = Application.InputBox( _
-                "Введите диапазон откуда требуется подгрузить данные", _
-                "Ввод диапазона", Type:=8)
-'Print Rgn2.Column
-
 End Sub
 
 Private Sub paint_cells( _
@@ -1120,7 +900,10 @@ Private Sub paint_cells( _
                         color_index_val As Long, _
                         cell_pointer As Long _
                        )
+
+    
     Dim fnt_clr As Long
+
 
     If color_index_val = 14348258 Or _
        color_index_val = 11854022 Or _
@@ -1131,14 +914,11 @@ Private Sub paint_cells( _
                 fnt_clr = vbWhite
     End If
 
+
     With Selection.Cells(cell_pointer)
         .Font.Name = "Cambria"
         .Font.Size = 8
-'        .Font.Bold = True
         .Font.Color = fnt_clr
-'        .HorizontalAlignment = xlCenter
-'        .VerticalAlignment = xlTop
-'        .WrapText = True
         .Interior.Color = color_index_val
     End With
     
@@ -1147,11 +927,7 @@ Private Sub paint_cells( _
         With Selection.Cells(cell_pointer + 1)
             .Font.Name = "Cambria"
             .Font.Size = 9
-'            .Font.Bold = True
             .Font.Color = fnt_clr
-'            .HorizontalAlignment = xlLeft
-'            .VerticalAlignment = xlTop
-'            .WrapText = True
             .Interior.Color = color_index_val
         End With
     
@@ -1160,158 +936,20 @@ Private Sub paint_cells( _
         With Selection.Cells(cell_pointer + 1)
             .Font.Name = "Cambria"
             .Font.Size = 9
-'            .Font.Bold = True
             .Font.Color = fnt_clr
-'            .HorizontalAlignment = xlLeft
-'            .VerticalAlignment = xlTop
-'            .WrapText = True
             .Interior.Color = color_index_val
         End With
         
         With Selection.Cells(cell_pointer + 2)
             .Font.Name = "Cambria"
             .Font.Size = 9
-'            .Font.Bold = True
             .Font.Color = fnt_clr
-'            .HorizontalAlignment = xlLeft
-'            .VerticalAlignment = xlTop
-'            .WrapText = True
             .Interior.Color = color_index_val
         End With
     
     End If
 
 End Sub
-
-Function custom_toll( _
-                     custom_sum As Variant, _
-                     Optional currency_rate As Single = 1 _
-                    ) As Double
-        
-'ЭТО СТАРАЯ ВЕРСИЯ ФУНКЦИИ. АКТУАЛЬНАЯ ВЕРСИЯ В МОДУЛЕ my_funcs.xlam
-
-'Назначение формулы.
-'Эта функция подсчитывает сумму таможенных сборов в зависимости от суммы
-'таможенной стоимости передаваемой по ссылке (первый аргумент), второй
-'аргумент - необязательный - это курс, на который умножается! первый
-'аргумент функции, чтобы получить сумму таможенной стоимости (в рублях)
-'для расчета сборов. Если подразумевается что первый аргумент
-'(обязательный) это таможенная стоимость в рублях, тогда второй аргумент
-'(курс) можно не указывать или поставить 1 (единицу) - такое значение
-'будет по умолчанию, если второй аргумент пропущен.
-
-'Что делает функция.
-'Если формула ссылается на сумму в валюте (долларах, евро или юанях -
-'неважно) - нужно вторым аргументом указать курс, на который будет
-'умножаться! первый аргумент, чтобы получить сумму в рублях. Далее
-'полученная таможенная стоимость в рублях "прогоняется" по
-'конструкции "IF ElseIF Else EndIF" - которая выдает сумму таможенных
-'сборов в рублях в зависимости от таможенной стоимости. Если второй
-'аргумент указан и отличен от 1 (единицы) - итог из конструкции "IF
-'ElseIF Else EndIF" делится на этот курс и результат указывается в той
-'же валюте, в которой подразумевается номинирована таможенная стоимость
-'(первый) аргумент.
-
-'Особенности работы.
-'Функция обрабатывает сутуации, когда ячейка, на которую ссылается
-'формула, содержит числовые данные форматированные в формате Даты,
-'или Логического значения (True, False) или содержит значения в
-'отрицательном диапазоне, а также если ячейка содержит текстовые данные.
-'В таких случаях, когда данные, на которые ссылается функция,
-'форматированы как ДАТА, ИСТИНА или ЛОЖЬ или содержат отрицательные
-'значения, текстовые значения - выдает значение ошибки "#ЗНАЧ!".
-'Также я сделал (но потом закомментировал) чтобы в таких случаях
-'выдавалось сообщение-предупреждение "о неверном типе данных переданных
-'в формулу" - сообщение, которое размещено после ключевого слова
-'heandler.
-'Я отключил это сообщение, поскольку, если таких формул (которые выдают
-'ошибку) будет много на листе - при каждом открытии файла и при каждом
-'пересчете листа будет выскакивать много таких сообщений, которые нужно
-'будет "отщелкать" Enter-ом. Сообщения MsgBox, которые размещеные в
-'управляющей конструкции "IF ElseIF ELSE EndIF" не рабоатают (даже если
-'их раскомментировать) - не суть.
-
-'Дисклеймер (оговорка).
-'Сумма таможенных сборов считается в этой функции по стандартному
-'алгоритму - т.е. в зависимости от суммы таможенной стоимости - без
-'учёта кодов, по которым сразу начисляется 30000 руб. Другими словами в
-'функции вообще не обрабатываются такие ситуации, когда сумма таможенных
-'сборов зависит от кода ТНВЭД.
-    
-    
-    Dim custom_sum_ru As Double
-    Dim bool As Boolean
-    Dim msg_string As String
-
-    On Error GoTo handler:
-    
-    If TypeName(custom_sum) = "Range" Then
-        bool = TypeName(custom_sum.Value) = "Boolean"
-    Else
-        bool = TypeName(custom_sum) = "Boolean"
-    End If
-
-    custom_sum_ru = custom_sum * currency_rate
-    
-    If IsDate(custom_sum) Then 'TypeName(custom_sum.Value) = "Date" Then
-        custom_toll = CVErr(xlErrValue) ' "#DATE!"
-        msg_string = "Функции передан неверный тип данных; " _
-                      & vbCrLf & _
-                     "Аргумент ссылается на дату!"
-    ElseIf bool Then custom_toll = CVErr(xlErrValue) ' "#ЗНАЧ!"
-        msg_string = "Функции передан неверный тип данных; " _
-                      & vbCrLf & _
-                     "Аргумент ссылается на логическое значение!"
-    ElseIf custom_sum_ru >= 0 And custom_sum_ru <= 200000 Then
-        custom_toll = 775 / currency_rate
-    ElseIf custom_sum_ru > 200000 And custom_sum_ru <= 450000 Then
-        custom_toll = 1550 / currency_rate
-    ElseIf custom_sum_ru > 450000 And custom_sum_ru <= 1200000 Then
-        custom_toll = 3100 / currency_rate
-    ElseIf custom_sum_ru > 1200000 And custom_sum_ru <= 2700000 Then
-        custom_toll = 8530 / currency_rate
-    ElseIf custom_sum_ru > 2700000 And custom_sum_ru <= 4200000 Then
-        custom_toll = 12000 / currency_rate
-    ElseIf custom_sum_ru > 4200000 And custom_sum_ru <= 5500000 Then
-        custom_toll = 15500 / currency_rate
-    ElseIf custom_sum_ru > 5500000 And custom_sum_ru <= 7000000 Then
-        custom_toll = 20000 / currency_rate
-    ElseIf custom_sum_ru > 7000000 And custom_sum_ru <= 8000000 Then
-        custom_toll = 23000 / currency_rate
-    ElseIf custom_sum_ru > 8000000 And custom_sum_ru <= 9000000 Then
-        custom_toll = 25000 / currency_rate
-    ElseIf custom_sum_ru > 9000000 And custom_sum_ru <= 10000000 Then
-        custom_toll = 27000 / currency_rate
-    ElseIf custom_sum_ru > 10000000 Then
-        custom_toll = 30000 / currency_rate
-    ElseIf custom_sum_ru < 0 Then
-        custom_toll = CVErr(xlErrValue) ' "#ЗНАЧ!"
-        msg_string = "Таможенная стоимость не может быть " & _
-                     "отрицательным числом. " & vbCrLf & _
-                     "Проверьте переданные функции аргументы."
-    Else
-        custom_toll = CVErr(xlErrValue) ' "#ЗНАЧ!"
-        msg_string = "Неверный тип данных. " & vbCrLf & _
-                     "Формуле передан некорректный аргумент. " _
-                      & vbCrLf & _
-                     "Проверьте данные, на которые ссылается формула!"
-    End If
-    
-    custom_toll = Round(custom_toll, 2)
-    
-    Exit Function
-
-handler:
-'        MsgBox "Неверный тип данных. " & _
-                "Формуле передан некорректный аргумент " _
-                & vbCrLf & _
-                "(дата, логическое или отрицательное значение)." _
-                & vbCrLf & vbCrLf & _
-                "Проверьте данные, на которые ссылается формула."
-'        MsgBox msg_string
-        custom_toll = CVErr(xlErrValue) '= "#ЗНАЧ!"
-
-End Function
 
 Public Sub cells_numbering()
 
@@ -1358,45 +996,3 @@ Public Sub cells_numbering()
     Next
     
 End Sub
-
-'Sub iterate_lines()
-'
-'    For i = 1 To Selection.Rows.Count
-'        If Not Selection.Rows(i).Hidden Then
-'            Selection.Cells(i, 1) = "Ok"
-'        End If
-'    Next i
-'----------------------------------------
-'
-'    For Each Row In Selection.Rows
-'        If Not Row.Hidden Then
-'            Row.Interior.Color = 3506772
-'        End If
-'    Next
-'----------------------------------------
-'
-'    i = 1
-'    For Each Row In Selection.Rows
-'        If Not Row.Hidden Then
-'            Debug.Print Row.Cells(1, 1), i
-'            Row.Cells(1, 1) = "ok_" & i
-'            Row.Cells(1, 2) = "ok_" & i + 1
-'            Row.Cells(1, 3) = "ok_" & i + 2
-'        End If
-'        i = i + 3
-'    Next Row
-'----------------------------------------
-'
-'    For Each cell In Selection
-'        If Not cell.Rows.Hidden Then Debug.Print cell.Row, "not_hidden" _
-'            Else Debug.Print cell.Row, "row_hidden"
-'    Next
-'----------------------------------------
-'
-'    For Each cell In Selection
-'        If Not cell.Rows.Hidden Then
-'            Debug.Print cell.Value, cell.Row, "not_hidden"
-'        Else: Debug.Print cell.Value, cell.Row, "row_hidden"
-'        End If
-'    Next
-'End Sub
