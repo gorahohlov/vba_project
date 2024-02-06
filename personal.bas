@@ -67,7 +67,7 @@ Sub highlight_codes_39()
 '(таможенны сбор 30000) - желтый фон ячейки, цвет шрифта авто,
 'оканктовка двойной рамкой.
 
-'Форматирование кодов, которы упоминаются в обоих перечнях - фиолетовый
+'Форматирование кодов, которые упоминаются в обоих перечнях - фиолетовый
 'фон, белый шрифт, двойная белая рамка вокруг ячейки.
 
 'Теперь процедура не обрабатывает скрытые (отфильтрованные) ячейки;
@@ -928,21 +928,23 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
                         0 _
                         )
         If Not IsError(hscode) And sel_col_num > 1 Then
-            description_31 = VLookUp4( _
-                                Cells(processing_row_num, article_col_num), _
-                                vlookup_table_rng, _
-                                vlookup_arg3, _
-                                vlookup_arg4_ver2, _
-                                0 _
-                                )
+            description_31 = LCase( _
+                        VLookUp4( _
+                            Cells(processing_row_num, article_col_num), _
+                            vlookup_table_rng, _
+                            vlookup_arg3, _
+                            vlookup_arg4_ver2, _
+                            0) _
+                                  )
             If sel_col_num > 2 Then
-                description_art = VLookUp4( _
-                                Cells(processing_row_num, article_col_num), _
-                                vlookup_table_rng, _
-                                vlookup_arg3, _
-                                vlookup_arg4_ver3, _
-                                0 _
-                                )
+                description_art = LCase( _
+                        VLookUp4( _
+                            Cells(processing_row_num, article_col_num), _
+                            vlookup_table_rng, _
+                            vlookup_arg3, _
+                            vlookup_arg4_ver3, _
+                            0) _
+                                       )
             End If
         Else
             description_31 = CVErr(xlErrNA)
@@ -974,21 +976,25 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
                             )
                 
                 If Not IsError(hscode) And sel_col_num > 1 Then
-                    description_31 = VLookUp4( _
+                    description_31 = LCase( _
+                        VLookUp4( _
                                 Cells(processing_row_num, article_col_num), _
                                 vlookup_table_rng, _
                                 vlookup_arg3, _
                                 vlookup_arg4_ver2, _
                                 counter2 _
-                                )
+                                ) _
+                                          )
                     If sel_col_num > 2 Then
-                        description_art = VLookUp4( _
+                        description_art = LCase( _
+                            VLookUp4( _
                                 Cells(processing_row_num, article_col_num), _
                                 vlookup_table_rng, _
                                 vlookup_arg3, _
                                 vlookup_arg4_ver3, _
                                 counter2 _
-                                )
+                                ) _
+                                               )
                     End If
                 Else
                     description_31 = CVErr(xlErrNA)
@@ -1000,31 +1006,41 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
                         Case upper_ - 0
                             Call paint_cells( _
                                              Selection.Columns.Count, _
-                                             13819376, _
+                                             14348258, _
                                              counter1 _
                                             )
                         Case upper_ - 1
                             Call paint_cells( _
                                              Selection.Columns.Count, _
-                                             11321572, _
+                                             11854022, _
                                              counter1 _
                                             )
                         Case upper_ - 2
                             Call paint_cells( _
                                              Selection.Columns.Count, _
-                                             8823768, _
+                                             9359529, _
                                              counter1 _
                                             )
-                        Case 1 To upper_ - 3
+                        Case upper_ - 3
                             Call paint_cells( _
                                              Selection.Columns.Count, _
-                                             4025277, _
+                                             3506772, _
+                                             counter1 _
+                                            )
+                        Case 1 To upper_ - 4
+                            Call paint_cells( _
+                                             Selection.Columns.Count, _
+                                             2315831, _
                                              counter1 _
                                             )
                     End Select
+
+'                   альтернативные заливки (оттенки коричневого):
+'                        13819376, 11321572, 08823768, 04025277
+
 '                   альтернативные заливки (оттенки зеленого):
-'                        14348258, 11854022, 9359529, 3506772, 2315831
-                    
+'                        14348258, 11854022, 09359529, 03506772, 02315831
+
                     Exit For
                 End If
         
@@ -1035,7 +1051,7 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
         Selection.Cells(counter1) = hscode
         If Selection.Columns.Count = 2 Then
             Selection.Cells(counter1 + 1) = description_31
-        ElseIf Selection.Columns.Count = 3 Then
+        ElseIf Selection.Columns.Count > 2 Then
             Selection.Cells(counter1 + 1) = description_31
             Selection.Cells(counter1 + 2) = description_art
         End If
@@ -1104,14 +1120,65 @@ Private Sub paint_cells( _
                         color_index_val As Long, _
                         cell_pointer As Long _
                        )
+    Dim fnt_clr As Long
 
-    Selection.Cells(cell_pointer).Interior.Color = color_index_val
+    If color_index_val = 14348258 Or _
+       color_index_val = 11854022 Or _
+       color_index_val = 9359529 Then
+                fnt_clr = vbBlack
+    ElseIf color_index_val = 3506772 Or _
+           color_index_val = 2315831 Then
+                fnt_clr = vbWhite
+    End If
+
+    With Selection.Cells(cell_pointer)
+        .Font.Name = "Cambria"
+        .Font.Size = 8
+'        .Font.Bold = True
+        .Font.Color = fnt_clr
+'        .HorizontalAlignment = xlCenter
+'        .VerticalAlignment = xlTop
+'        .WrapText = True
+        .Interior.Color = color_index_val
+    End With
     
     If sel_col_cnt = 2 Then
-        Selection.Cells(cell_pointer + 1).Interior.Color = color_index_val
+        
+        With Selection.Cells(cell_pointer + 1)
+            .Font.Name = "Cambria"
+            .Font.Size = 9
+'            .Font.Bold = True
+            .Font.Color = fnt_clr
+'            .HorizontalAlignment = xlLeft
+'            .VerticalAlignment = xlTop
+'            .WrapText = True
+            .Interior.Color = color_index_val
+        End With
+    
     ElseIf sel_col_cnt >= 3 Then
-        Selection.Cells(cell_pointer + 1).Interior.Color = color_index_val
-        Selection.Cells(cell_pointer + 2).Interior.Color = color_index_val
+        
+        With Selection.Cells(cell_pointer + 1)
+            .Font.Name = "Cambria"
+            .Font.Size = 9
+'            .Font.Bold = True
+            .Font.Color = fnt_clr
+'            .HorizontalAlignment = xlLeft
+'            .VerticalAlignment = xlTop
+'            .WrapText = True
+            .Interior.Color = color_index_val
+        End With
+        
+        With Selection.Cells(cell_pointer + 2)
+            .Font.Name = "Cambria"
+            .Font.Size = 9
+'            .Font.Bold = True
+            .Font.Color = fnt_clr
+'            .HorizontalAlignment = xlLeft
+'            .VerticalAlignment = xlTop
+'            .WrapText = True
+            .Interior.Color = color_index_val
+        End With
+    
     End If
 
 End Sub

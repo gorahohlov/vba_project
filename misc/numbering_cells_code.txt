@@ -1,0 +1,88 @@
+Public Sub нумерация_ячеек()
+
+'Процедура позволяет нумеровать строки диапазона, в котором некоторые
+'строки скрыты (отфильтрованы). Нумерация производится только
+'отображаемых (нескрытых) строк. Номера отобраемых строк вставляются
+'как значения, т.е. после удаления фильтра или отображения всех
+'строк - сделанная нумерация не меняется, не пересчитывается.
+'Это намеренное свойство (feature) процедуры - чтобы нумерация
+'не сбивалась при изменении фильтра, скрытия или отображения строк.
+'Если нужен адаптивный фильтр - лучше для таких случаев использовать
+'формулы (АГРЕГАТ, ПРОМЕЖУТОЧНЫЕ.ИТОГИ(СРЁТЗ;...) и т.д.)
+
+'Нумерация начинается со значения, которе содержится в левой верхней
+'ячейке выделенного диапазона; Если в этой ячейке содержатся текстовые
+'значения или значения даты или пустое значение или значение меньше
+'единицы, отрицательные значения -  тогда нумерация начинается
+'с 1 (единицы).
+
+'Использование макроса.
+'Нужно выделить диапазон и вызвать макрос. Все отображаемые (нескрытые)
+'строки диапазона будут пронумерованы по порядку - с единицы или
+'начиная с числового значения в левой верхней ячейке диапазона.
+'Пронумерована будет только левая колонка выделенного диапазона,
+    
+'одна ячейка - будет пронумерована только она по правилам описанным
+'выше (учитывая формат и значение содержащееся в ячейке).
+
+
+       
+    Dim i As Long, n As Long
+       
+    If IsNumeric(Selection.Cells(1, 1)) And _
+            Not IsEmpty(Selection.Cells(1, 1)) And _
+            Not Selection.Cells(1, 1) < 1 Then
+        n = Selection.Cells(1).Value
+    Else: n = 1
+    End If
+       
+    For i = 1 To Selection.Rows.Count
+        If Not Selection.Rows(i).Hidden Then
+            Selection.Cells(i, 1) = n: n = n + 1
+        End If
+    Next
+    
+End Sub
+
+
+'Sub iterate_lines()
+'
+'    For i = 1 To Selection.Rows.Count
+'        If Not Selection.Rows(i).Hidden Then
+'            Selection.Cells(i, 1) = "Ok"
+'        End If
+'    Next i
+'----------------------------------------
+'
+'    For Each Row In Selection.Rows
+'        If Not Row.Hidden Then
+'            Row.Interior.Color = 3506772
+'        End If
+'    Next
+'----------------------------------------
+'
+'    i = 1
+'    For Each Row In Selection.Rows
+'        If Not Row.Hidden Then
+'            Debug.Print Row.Cells(1, 1), i
+'            Row.Cells(1, 1) = "ok_" & i
+'            Row.Cells(1, 2) = "ok_" & i + 1
+'            Row.Cells(1, 3) = "ok_" & i + 2
+'        End If
+'        i = i + 3
+'    Next Row
+'----------------------------------------
+'
+'    For Each cell In Selection
+'        If Not cell.Rows.Hidden Then Debug.Print cell.Row, "not_hidden" _
+'            Else Debug.Print cell.Row, "row_hidden"
+'    Next
+'----------------------------------------
+'
+'    For Each cell In Selection
+'        If Not cell.Rows.Hidden Then
+'            Debug.Print cell.Value, cell.Row, "not_hidden"
+'        Else: Debug.Print cell.Value, cell.Row, "row_hidden"
+'        End If
+'    Next
+'End Sub
