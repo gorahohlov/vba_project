@@ -11,11 +11,7 @@ Public vlookup_table_rng As Range
 Public cancel_flag As Boolean
 Public sel_col_num As Integer
 
-<<<<<<< Updated upstream
-Sub подсветить_коды_39()
-=======
 Private Sub подсветить_коды_39()
->>>>>>> Stashed changes
 
 'Данный макрос предназначен для выделения ячеек с кодами ТН ВЭД
 '(10 знаков), которые попадают в Перечень товаров, которые должны
@@ -227,11 +223,7 @@ Private Function IsInArray( _
 
 End Function
 
-<<<<<<< Updated upstream
-Sub подсветить_коды_342()
-=======
 Private Sub подсветить_коды_342()
->>>>>>> Stashed changes
 
     Dim arr_342_position As Variant, _
         var_342_04 As Variant, _

@@ -134,11 +134,7 @@ Function ВПР4( _
 
 End Function
 
-<<<<<<< Updated upstream
-Function ТАМ_СТОИМ( _
-=======
 Function ТАМ_СБОР( _
->>>>>>> Stashed changes
                      custom_sum As Variant, _
                      Optional currency_rate As Single = 1, _
                      Optional msg_flag As Boolean = False _
@@ -220,85 +216,38 @@ Function ТАМ_СБОР( _
         msg_string = "Функции передан неверный тип данных; " _
                       & vbCrLf & _
                      "Аргумент ссылается на дату!"
-<<<<<<< Updated upstream
-        ТАМ_СТОИМ = CVErr(xlErrValue)
-=======
         ТАМ_СБОР = CVErr(xlErrValue)
->>>>>>> Stashed changes
     ElseIf bool_1 Then
         msg_string = "Функции передан неверный тип данных; " _
                       & vbCrLf & _
                      "Аргумент ссылается на логическое значение!"
-<<<<<<< Updated upstream
-        ТАМ_СТОИМ = CVErr(xlErrValue)
-=======
         ТАМ_СБОР = CVErr(xlErrValue)
->>>>>>> Stashed changes
     ElseIf Application.WorksheetFunction.IsText(custom_sum) Then
         msg_string = "Функции передан неверный тип данных; " _
                       & vbCrLf & _
                      "Аргумент ссылается на строковое значение (текст)!"
-<<<<<<< Updated upstream
-        ТАМ_СТОИМ = CVErr(xlErrValue)
-=======
         ТАМ_СБОР = CVErr(xlErrValue)
->>>>>>> Stashed changes
     ElseIf bool_2 Then
         msg_string = "Функции передано неизвестное или удаленное имя:" _
                       & vbCrLf & _
                      "неверный именованный диапазон или ссылка на ячейку;" _
                       & vbCrLf & _
                       "Ошибка синтаксиса. Проверьте введенные данные."
-<<<<<<< Updated upstream
-        ТАМ_СТОИМ = CVErr(xlErrName)
-=======
         ТАМ_СБОР = CVErr(xlErrName)
->>>>>>> Stashed changes
     ElseIf custom_sum < 0 Or currency_rate < 0 Then
         msg_string = "Таможенная стоимость или курс валюты не может " & _
                      "быть отрицательным числом. " & vbCrLf & _
                      "Проверьте переданные функции аргументы."
-<<<<<<< Updated upstream
-        ТАМ_СТОИМ = CVErr(xlErrNum)
-=======
         ТАМ_СБОР = CVErr(xlErrNum)
->>>>>>> Stashed changes
     ElseIf currency_rate = 0 Then
         msg_string = "В формуле предпринята попытка деления на ноль." _
                       & vbCrLf & _
                       "Проверьте аргументы и ссылки переданные в формулу!"
-<<<<<<< Updated upstream
-        ТАМ_СТОИМ = CVErr(xlErrDiv0)
-=======
         ТАМ_СБОР = CVErr(xlErrDiv0)
->>>>>>> Stashed changes
     ElseIf custom_sum_ru >= 0 And _
            IsNumeric(custom_sum_ru) And _
            custom_sum_ru <> "" Then
             If custom_sum_ru >= 0 And custom_sum_ru <= 200000 Then
-<<<<<<< Updated upstream
-                ТАМ_СТОИМ = 775 / currency_rate
-            ElseIf custom_sum_ru > 200000 And custom_sum_ru <= 450000 Then
-                ТАМ_СТОИМ = 1550 / currency_rate
-            ElseIf custom_sum_ru > 450000 And custom_sum_ru <= 1200000 Then
-                ТАМ_СТОИМ = 3100 / currency_rate
-            ElseIf custom_sum_ru > 1200000 And custom_sum_ru <= 2700000 Then
-                ТАМ_СТОИМ = 8530 / currency_rate
-            ElseIf custom_sum_ru > 2700000 And custom_sum_ru <= 4200000 Then
-                ТАМ_СТОИМ = 12000 / currency_rate
-            ElseIf custom_sum_ru > 4200000 And custom_sum_ru <= 5500000 Then
-                ТАМ_СТОИМ = 15500 / currency_rate
-            ElseIf custom_sum_ru > 5500000 And custom_sum_ru <= 7000000 Then
-                ТАМ_СТОИМ = 20000 / currency_rate
-            ElseIf custom_sum_ru > 7000000 And custom_sum_ru <= 8000000 Then
-                ТАМ_СТОИМ = 23000 / currency_rate
-            ElseIf custom_sum_ru > 8000000 And custom_sum_ru <= 9000000 Then
-                ТАМ_СТОИМ = 25000 / currency_rate
-            ElseIf custom_sum_ru > 9000000 And custom_sum_ru <= 10000000 Then
-                ТАМ_СТОИМ = 27000 / currency_rate
-            ElseIf custom_sum_ru > 10000000 Then
-                ТАМ_СТОИМ = 30000 / currency_rate
-=======
                 ТАМ_СБОР = 775 / currency_rate
             ElseIf custom_sum_ru > 200000 And custom_sum_ru <= 450000 Then
                 ТАМ_СБОР = 1550 / currency_rate
@@ -320,7 +269,6 @@ Function ТАМ_СБОР( _
                 ТАМ_СБОР = 27000 / currency_rate
             ElseIf custom_sum_ru > 10000000 Then
                 ТАМ_СБОР = 30000 / currency_rate
->>>>>>> Stashed changes
             End If
     Else
         msg_string = "Неверный тип данных. " _
@@ -328,19 +276,11 @@ Function ТАМ_СБОР( _
                      "Формуле передан некорректный аргумент. " _
                       & vbCrLf & _
                      "Проверьте данные, на которые ссылается формула!"
-<<<<<<< Updated upstream
-        ТАМ_СТОИМ = CVErr(xlErrValue)
-    End If
-
-    If TypeName(ТАМ_СТОИМ) <> "Error" Then _
-        ТАМ_СТОИМ = Round(ТАМ_СТОИМ, 2)
-=======
         ТАМ_СБОР = CVErr(xlErrValue)
     End If
 
     If TypeName(ТАМ_СБОР) <> "Error" Then _
         ТАМ_СБОР = Round(ТАМ_СБОР, 2)
->>>>>>> Stashed changes
     
     If msg_string <> "" And msg_flag Then MsgBox msg_string
 
