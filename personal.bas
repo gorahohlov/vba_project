@@ -11,7 +11,7 @@ Public vlookup_table_rng As Range
 Public cancel_flag As Boolean
 Public sel_col_num As Integer
 
-Sub highlight_codes_39()
+Private Sub highlight_codes_39()
 
 'Данный макрос предназначен для выделения ячеек с кодами ТН ВЭД
 '(10 знаков), которые попадают в Перечень товаров, которые должны
@@ -223,7 +223,7 @@ Private Function IsInArray( _
 
 End Function
 
-Sub highlight_codes_342()
+Private Sub highlight_codes_342()
 
     Dim arr_342_position As Variant, _
         var_342_04 As Variant, _
@@ -837,6 +837,7 @@ Attribute partial_match.VB_ProcData.VB_Invoke_Func = "Й\n14"
                     Select Case counter2
 '                       альтернативные заливки (оттенки коричневого):
 '                       13819376, 11321572, 08823768, 04025277
+
 '                       альтернативные заливки (оттенки зеленого):
 '                       14348258, 11854022, 09359529, 03506772, 02315831
                         Case upper_ - 0
