@@ -134,7 +134,7 @@ Function VLookUp4( _
 
 End Function
 
-Function custom_toll( _
+Function CUSTOM_TOLL( _
                      custom_sum As Variant, _
                      Optional currency_rate As Single = 1, _
                      Optional msg_flag As Boolean = False _
@@ -216,59 +216,59 @@ Function custom_toll( _
         msg_string = "Функции передан неверный тип данных; " _
                       & vbCrLf & _
                      "Аргумент ссылается на дату!"
-        custom_toll = CVErr(xlErrValue)
+        CUSTOM_TOLL = CVErr(xlErrValue)
     ElseIf bool_1 Then
         msg_string = "Функции передан неверный тип данных; " _
                       & vbCrLf & _
                      "Аргумент ссылается на логическое значение!"
-        custom_toll = CVErr(xlErrValue)
+        CUSTOM_TOLL = CVErr(xlErrValue)
     ElseIf Application.WorksheetFunction.IsText(custom_sum) Then
         msg_string = "Функции передан неверный тип данных; " _
                       & vbCrLf & _
                      "Аргумент ссылается на строковое значение (текст)!"
-        custom_toll = CVErr(xlErrValue)
+        CUSTOM_TOLL = CVErr(xlErrValue)
     ElseIf bool_2 Then
         msg_string = "Функции передано неизвестное или удаленное имя:" _
                       & vbCrLf & _
                      "неверный именованный диапазон или ссылка на ячейку;" _
                       & vbCrLf & _
                       "Ошибка синтаксиса. Проверьте введенные данные."
-        custom_toll = CVErr(xlErrName)
+        CUSTOM_TOLL = CVErr(xlErrName)
     ElseIf custom_sum < 0 Or currency_rate < 0 Then
         msg_string = "Таможенная стоимость или курс валюты не может " & _
                      "быть отрицательным числом. " & vbCrLf & _
                      "Проверьте переданные функции аргументы."
-        custom_toll = CVErr(xlErrNum)
+        CUSTOM_TOLL = CVErr(xlErrNum)
     ElseIf currency_rate = 0 Then
         msg_string = "В формуле предпринята попытка деления на ноль." _
                       & vbCrLf & _
                       "Проверьте аргументы и ссылки переданные в формулу!"
-        custom_toll = CVErr(xlErrDiv0)
+        CUSTOM_TOLL = CVErr(xlErrDiv0)
     ElseIf custom_sum_ru >= 0 And _
            IsNumeric(custom_sum_ru) And _
            custom_sum_ru <> "" Then
             If custom_sum_ru >= 0 And custom_sum_ru <= 200000 Then
-                custom_toll = 775 / currency_rate
+                CUSTOM_TOLL = 775 / currency_rate
             ElseIf custom_sum_ru > 200000 And custom_sum_ru <= 450000 Then
-                custom_toll = 1550 / currency_rate
+                CUSTOM_TOLL = 1550 / currency_rate
             ElseIf custom_sum_ru > 450000 And custom_sum_ru <= 1200000 Then
-                custom_toll = 3100 / currency_rate
+                CUSTOM_TOLL = 3100 / currency_rate
             ElseIf custom_sum_ru > 1200000 And custom_sum_ru <= 2700000 Then
-                custom_toll = 8530 / currency_rate
+                CUSTOM_TOLL = 8530 / currency_rate
             ElseIf custom_sum_ru > 2700000 And custom_sum_ru <= 4200000 Then
-                custom_toll = 12000 / currency_rate
+                CUSTOM_TOLL = 12000 / currency_rate
             ElseIf custom_sum_ru > 4200000 And custom_sum_ru <= 5500000 Then
-                custom_toll = 15500 / currency_rate
+                CUSTOM_TOLL = 15500 / currency_rate
             ElseIf custom_sum_ru > 5500000 And custom_sum_ru <= 7000000 Then
-                custom_toll = 20000 / currency_rate
+                CUSTOM_TOLL = 20000 / currency_rate
             ElseIf custom_sum_ru > 7000000 And custom_sum_ru <= 8000000 Then
-                custom_toll = 23000 / currency_rate
+                CUSTOM_TOLL = 23000 / currency_rate
             ElseIf custom_sum_ru > 8000000 And custom_sum_ru <= 9000000 Then
-                custom_toll = 25000 / currency_rate
+                CUSTOM_TOLL = 25000 / currency_rate
             ElseIf custom_sum_ru > 9000000 And custom_sum_ru <= 10000000 Then
-                custom_toll = 27000 / currency_rate
+                CUSTOM_TOLL = 27000 / currency_rate
             ElseIf custom_sum_ru > 10000000 Then
-                custom_toll = 30000 / currency_rate
+                CUSTOM_TOLL = 30000 / currency_rate
             End If
     Else
         msg_string = "Неверный тип данных. " _
@@ -276,11 +276,11 @@ Function custom_toll( _
                      "Формуле передан некорректный аргумент. " _
                       & vbCrLf & _
                      "Проверьте данные, на которые ссылается формула!"
-        custom_toll = CVErr(xlErrValue)
+        CUSTOM_TOLL = CVErr(xlErrValue)
     End If
 
-    If TypeName(custom_toll) <> "Error" Then _
-        custom_toll = Round(custom_toll, 2)
+    If TypeName(CUSTOM_TOLL) <> "Error" Then _
+        CUSTOM_TOLL = Round(CUSTOM_TOLL, 2)
     
     If msg_string <> "" And msg_flag Then MsgBox msg_string
 
@@ -354,8 +354,8 @@ End Function
 Public Function REPLACE_CYRIL_LATIN(txt_ref) As String
     
 'Функция поиска кириллических символов (похожих на латинские)
-'в артикулах, замены их на латинские символы и выделением красным
-'цветом их позиций (кириллических симвлов);
+'в артикулах, замены их на латинские символы и выделением цветом
+'фуксия их позиций (кириллических симвлов);
 
     Dim latin As Variant
     Dim cyril As Variant
@@ -365,12 +365,7 @@ Public Function REPLACE_CYRIL_LATIN(txt_ref) As String
     Dim find_flag As Boolean
     Dim symbol_translit As String
     Dim merged_text As String
-'    Dim pos_reg() As Integer
-'    Dim arr_counter As Integer
-'    Dim native_font_color As Long
 
-'    arr_counter = 0
-'    native_font_color = Empty
 '    latin = Array("a", "B", "c", "e", "k", "m", "n", "H", _
 '                  "o", "p", "T", "u", "y", "A", "B", "E", _
 '                  "K", "M", "O", "P", "C", "T", "H", "Y")
@@ -409,29 +404,10 @@ Public Function REPLACE_CYRIL_LATIN(txt_ref) As String
             merged_text = merged_text & symbol_translit
             If TypeName(txt_ref) = "Range" Then _
                 txt_ref.Characters(i, 1).Font.ColorIndex = 7
-'                With
-'                    .Font.FontStyle = "Bold Italic"
-'                     я забыл что в функциях невозможно форматирование;
-'                End With
-'            End If
-
-'            ReDim Preserve pos_reg(arr_counter)
-'            pos_reg(arr_counter) = i
-'            arr_counter = arr_counter + 1
         Else: merged_text = merged_text & one_symbol
-'            If IsEmpty(native_font_color) And TypeName(txt_ref) = "Range" Then
-'                native_font_color = txt_ref.Characters(i, 1).Font.Color
-'            End If
         End If
     Next
 
     REPLACE_CYRIL_LATIN = merged_text
     
-'    If arr_counter <> 0 Then
-'        For Each itm In pos_reg
-'            If TypeName(txt_ref) = "Range" Then _
-'                txt_ref.Characters(itm, 1).Font.Color = vbRed
-'        Next
-'    End If
-
 End Function

@@ -1063,12 +1063,6 @@ Attribute cyrillic_2_latin.VB_ProcData.VB_Invoke_Func = "ф\n14"
     For Each cell In Selection
         If Not IsError(cell.Value) And _
            Not cell.Rows.Hidden Then
-'            With cell
-'                a = .Value
-'                .NumberFormat = "General"
-'                .Value = a
-'                .NumberFormat = "@"
-'            End With
             arr_counter = 0
             ReDim pos_reg(arr_counter)
 
@@ -1123,8 +1117,5 @@ Attribute cyrillic_2_latin.VB_ProcData.VB_Invoke_Func = "ф\n14"
     t = Timer - t
     MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec", , _
            "proc: cyryllic_2_latin"
-
-'Selection.Interior.Pattern = xlNone
-'Selection.Font.ColorIndex = xlAutomatic
 
 End Sub
