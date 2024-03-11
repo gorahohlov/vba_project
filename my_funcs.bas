@@ -287,3 +287,151 @@ Function custom_toll( _
     On Error GoTo 0
 
 End Function
+
+Public Function CYR2LATIN(text_string As String) As String
+    
+'Максимально простая функция.
+'Только замена кириллических символов на латиницу.
+'Никакого форматирования.
+
+'Функция осуществляет поиск в текстовой строке (переданной
+'константой или по ссылке) кириллических символов, которые
+'по написанию очень похожи на латинские буквы и заменяет их
+'латинскими символами.
+
+'Подразумевается что формула применяется к ячейкам содержащим артикулы.
+'Sic! функция (формула) заменяет не все кириллические символы!
+'Заменяет только те кириллические символы, которые визуально сходны
+'с латинскими.
+
+    Dim latin As Variant
+    Dim cyril As Variant
+    Dim i As Double
+    Dim j As Double
+    Dim one_symbol As String
+    Dim find_flag As Boolean
+    Dim symbol_translit As String
+    Dim merged_text As String
+
+'    latin = Array("a", "B", "c", "e", "k", "m", "n", "H", _
+'                  "o", "p", "T", "u", "y", "A", "B", "E", _
+'                  "K", "M", "O", "P", "C", "T", "H", "Y")
+'    cyril = Array("а", "в", "с", "е", "к", "м", "н", "н", _
+'                  "о", "р", "т", "и", "у", "А", "В", "Е", _
+'                  "К", "М", "О", "Р", "С", "Т", "Н", "У")
+
+    'русскую "И" на что менять на латинскую "N" или "U"?
+    'вопрос открытый. Есть и другие коллизии.
+    cyril = Array("а", "в", "с", "е", "к", "м", "н", _
+                  "о", "п", "р", "т", "и", "у", "х", _
+                  "А", "В", "С", "Е", "К", "М", "Н", _
+                  "О", "П", "Р", "Т", "И", "У", "Х")
+    latin = Array("a", "B", "c", "e", "k", "m", "H", _
+                  "o", "n", "p", "T", "u", "y", "x", _
+                  "A", "B", "C", "E", "K", "M", "H", _
+                  "O", "n", "P", "T", "U", "Y", "X")
+
+    For i = 1 To Len(text_string)
+        one_symbol = Mid(text_string, i, 1)
+        find_flag = False
+        For j = LBound(cyril) To UBound(cyril)
+            If cyril(j) = one_symbol Then
+                symbol_translit = latin(j)
+                find_flag = True
+                Exit For
+            End If
+        Next
+        If find_flag Then
+            merged_text = merged_text & symbol_translit
+        Else: merged_text = merged_text & one_symbol
+        End If
+    Next
+
+    CYR2LATIN = merged_text
+
+End Function
+
+Public Function REPLACE_CYRIL_LATIN(txt_ref) As String
+    
+'Функция поиска кириллических символов (похожих на латинские)
+'в артикулах, замены их на латинские символы и выделением красным
+'цветом их позиций (кириллических симвлов);
+
+    Dim latin As Variant
+    Dim cyril As Variant
+    Dim i As Double
+    Dim j As Double
+    Dim one_symbol As String
+    Dim find_flag As Boolean
+    Dim symbol_translit As String
+    Dim merged_text As String
+'    Dim pos_reg() As Integer
+'    Dim arr_counter As Integer
+'    Dim native_font_color As Long
+
+'    arr_counter = 0
+'    native_font_color = Empty
+'    latin = Array("a", "B", "c", "e", "k", "m", "n", "H", _
+'                  "o", "p", "T", "u", "y", "A", "B", "E", _
+'                  "K", "M", "O", "P", "C", "T", "H", "Y")
+'    cyril = Array("а", "в", "с", "е", "к", "м", "н", "н", _
+'                  "о", "р", "т", "и", "у", "А", "В", "Е", _
+'                  "К", "М", "О", "Р", "С", "Т", "Н", "У")
+
+    'русскую "И" на что менять на латинскую "N" или "U"?
+    'вопрос открытый. Есть и другие коллизии.
+    cyril = Array("а", "в", "с", "е", "к", "м", "н", _
+                  "о", "п", "р", "т", "и", "у", "х", _
+                  "А", "В", "С", "Е", "К", "М", "Н", _
+                  "О", "П", "Р", "Т", "И", "У", "Х")
+    latin = Array("a", "B", "c", "e", "k", "m", "H", _
+                  "o", "n", "p", "T", "u", "y", "x", _
+                  "A", "B", "C", "E", "K", "M", "H", _
+                  "O", "n", "P", "T", "U", "Y", "X")
+
+    If TypeName(txt_ref) = "Range" Then
+        text_string = txt_ref.Text
+    Else
+        text_string = txt_ref
+    End If
+
+    For i = 1 To Len(text_string)
+        one_symbol = Mid(text_string, i, 1)
+        find_flag = False
+        For j = LBound(cyril) To UBound(cyril)
+            If cyril(j) = one_symbol Then
+                symbol_translit = latin(j)
+                find_flag = True
+                Exit For
+            End If
+        Next
+        If find_flag Then
+            merged_text = merged_text & symbol_translit
+            If TypeName(txt_ref) = "Range" Then _
+                txt_ref.Characters(i, 1).Font.ColorIndex = 7
+'                With
+'                    .Font.FontStyle = "Bold Italic"
+'                     я забыл что в функциях невозможно форматирование;
+'                End With
+'            End If
+
+'            ReDim Preserve pos_reg(arr_counter)
+'            pos_reg(arr_counter) = i
+'            arr_counter = arr_counter + 1
+        Else: merged_text = merged_text & one_symbol
+'            If IsEmpty(native_font_color) And TypeName(txt_ref) = "Range" Then
+'                native_font_color = txt_ref.Characters(i, 1).Font.Color
+'            End If
+        End If
+    Next
+
+    REPLACE_CYRIL_LATIN = merged_text
+    
+'    If arr_counter <> 0 Then
+'        For Each itm In pos_reg
+'            If TypeName(txt_ref) = "Range" Then _
+'                txt_ref.Characters(itm, 1).Font.Color = vbRed
+'        Next
+'    End If
+
+End Function
