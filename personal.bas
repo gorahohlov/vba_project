@@ -148,16 +148,16 @@ Private Sub подсветить_коды_39()
                    "9007100000", "9007200000", "9504301000", "9504500001", _
                    "9504500002")
 
-    For Each cell In Selection
-        If Not cell.Rows.Hidden Then
-            With cell
-                a = .Value
-                .NumberFormat = "General"
-                .Value = a
-                .NumberFormat = "@"
-            End With
-        End If
-    Next
+'    For Each cell In Selection
+'        If Not cell.Rows.Hidden Then
+'            With cell
+'                a = .Value
+'                .NumberFormat = "General"
+'                .Value = a
+'                .NumberFormat = "@"
+'            End With
+'        End If
+'    Next
 
     Set rng = Selection
 
@@ -165,6 +165,12 @@ Private Sub подсветить_коды_39()
 
         If Not IsError(cell.Value) And _
            Not cell.Rows.Hidden Then
+            With cell
+                a = .Value
+                .NumberFormat = "General"
+                .Value = a
+                .NumberFormat = "@"
+            End With
         If IsInArray(arr_one, Left(cell.Value, 4)) Then
 
             cond_01 = IsInArray(arr_04, Left(cell.Value, 4))
@@ -203,8 +209,8 @@ Private Sub подсветить_коды_39()
     Next cell
 
     t = Timer - t
-    MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec"
-
+    MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec", , _
+           "proc: подсветить_коды_39"
 End Sub
 
 Private Function IsInArray( _
@@ -237,7 +243,6 @@ Private Sub подсветить_коды_342()
         bool_02 As Boolean
     Dim rng As Range, cell As Range
     Dim t As Single
-
 
     t = Timer
 
@@ -280,16 +285,16 @@ Private Sub подсветить_коды_342()
                       "9102190000", "9102910000", "9106100000", "9106900000" _
                       )
 
-    For Each cell In Selection
-        If Not cell.Rows.Hidden Then
-            With cell
-                a = .Value
-                .NumberFormat = "General"
-                .Value = a
-                .NumberFormat = "@"
-            End With
-        End If
-    Next
+'    For Each cell In Selection
+'        If Not cell.Rows.Hidden Then
+'            With cell
+'                a = .Value
+'                .NumberFormat = "General"
+'                .Value = a
+'                .NumberFormat = "@"
+'            End With
+'        End If
+'    Next
 
     Set rng = Selection
 
@@ -297,6 +302,12 @@ Private Sub подсветить_коды_342()
 
         If Not IsError(cell.Value) And _
            Not cell.Rows.Hidden Then
+            With cell
+                a = .Value
+                .NumberFormat = "General"
+                .Value = a
+                .NumberFormat = "@"
+            End With
         If IsInArray(arr_342_position, Left(cell.Value, 4)) Then
 
             cond_08 = Left(cell.Value, 4) = var_342_04
@@ -330,7 +341,8 @@ Private Sub подсветить_коды_342()
     Next cell
 
     t = Timer - t
-    MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec"
+    MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec", , _
+           "proc: подсветить_коды_342"
 
 End Sub
 
@@ -357,7 +369,6 @@ Attribute подсветить_ячейки.VB_ProcData.VB_Invoke_Func = "q\n14"
         cond_10 As Boolean, cond_11 As Boolean, _
         bool_01 As Boolean, bool_02 As Boolean
     Dim t As Single, flg As Single
-
 
     t = Timer
 
@@ -450,16 +461,16 @@ Attribute подсветить_ячейки.VB_ProcData.VB_Invoke_Func = "q\n14"
                       "9102190000", "9102910000", "9106100000", "9106900000" _
                       )
 
-    For Each cell In Selection
-        If Not cell.Rows.Hidden Then
-            With cell
-                a = .Value
-                .NumberFormat = "General"
-                .Value = a
-                .NumberFormat = "@"
-            End With
-        End If
-    Next
+'    For Each cell In Selection
+'        If Not cell.Rows.Hidden Then
+'            With cell
+'                a = .Value
+'                .NumberFormat = "General"
+'                .Value = a
+'                .NumberFormat = "@"
+'            End With
+'        End If
+'    Next
 
     Set rng = Selection
 
@@ -467,6 +478,12 @@ Attribute подсветить_ячейки.VB_ProcData.VB_Invoke_Func = "q\n14"
 
         If Not IsError(cell.Value) And _
            Not cell.Rows.Hidden Then
+            With cell
+                a = .Value
+                .NumberFormat = "General"
+                .Value = a
+                .NumberFormat = "@"
+            End With
         If IsInArray(arr_one, Left(cell.Value, 4)) Or _
            IsInArray(arr_342_position, Left(cell.Value, 4)) Then
 
@@ -553,12 +570,13 @@ Attribute подсветить_ячейки.VB_ProcData.VB_Invoke_Func = "q\n14"
     Next cell
 
     t = Timer - t
-    MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec"
+    MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec", , _
+           "proc: подсветить_ячейки"
 
 End Sub
 
-Sub ПОИСК_ЧАСТИЧН()
-Attribute ПОИСК_ЧАСТИЧН.VB_ProcData.VB_Invoke_Func = "Й\n14"
+Sub поиск_частичн()
+Attribute поиск_частичн.VB_ProcData.VB_Invoke_Func = "Й\n14"
 
 'Процедура поиска и подтягиваня значений по частичному
 'совпадению артикула. По сути это несколько измененная функциональность
@@ -566,7 +584,7 @@ Attribute ПОИСК_ЧАСТИЧН.VB_ProcData.VB_Invoke_Func = "Й\n14"
 'артикулы (значения по которым ведется поиск, сопоставление диапазонов)
 'до какого-то количества знаков.
 
-'Главные отличия данной процедуры (partial_match) от
+'Главные отличия данной процедуры (поиск_частичн) от
 '   встроенной функции ВПР():
 'а) Произвольный порядок полей (колонок) с данными из таблицы Источник
 '   данных, т.е. где мы будем искать совпадения и откуда будем
@@ -692,7 +710,7 @@ Attribute ПОИСК_ЧАСТИЧН.VB_ProcData.VB_Invoke_Func = "Й\n14"
 
 'Что касается вопросов установки, перенесения на другие компьютеры.
 'Это не монолитная процедура. Она состоит из основной подпрограммы под
-'назаванием partial_match и нескольких вспомогательных процедур и
+'назаванием поиск_частичн и нескольких вспомогательных процедур и
 'функций (которые требуют установки зависимостей), а также глобальных
 'переменных, область действия которых должен быть весь проект.
 'Копирование этой функциональности на другой компьютер требует внесение
@@ -752,7 +770,7 @@ Attribute ПОИСК_ЧАСТИЧН.VB_ProcData.VB_Invoke_Func = "Й\n14"
         rw_num = Application.WorksheetFunction.RoundUp(counter1 _
                                         / Selection.Columns.Count, 0)
         If Not Selection.Rows(rw_num).Hidden Then
-        hscode = ВПР4( _
+        hscode = VLookUp4( _
                         Cells(processing_row_num, article_col_num), _
                         vlookup_table_rng, _
                         vlookup_arg3, _
@@ -761,7 +779,7 @@ Attribute ПОИСК_ЧАСТИЧН.VB_ProcData.VB_Invoke_Func = "Й\n14"
                         )
         If Not IsError(hscode) And sel_col_num > 1 Then
             description_31 = LCase( _
-                        ВПР4( _
+                        VLookUp4( _
                             Cells(processing_row_num, article_col_num), _
                             vlookup_table_rng, _
                             vlookup_arg3, _
@@ -770,7 +788,7 @@ Attribute ПОИСК_ЧАСТИЧН.VB_ProcData.VB_Invoke_Func = "Й\n14"
                                   )
             If sel_col_num > 2 Then
                 description_art = LCase( _
-                        ВПР4( _
+                        VLookUp4( _
                             Cells(processing_row_num, article_col_num), _
                             vlookup_table_rng, _
                             vlookup_arg3, _
@@ -799,7 +817,7 @@ Attribute ПОИСК_ЧАСТИЧН.VB_ProcData.VB_Invoke_Func = "Й\n14"
             End If
 
             For counter2 = upper_ To lower_ Step -1
-                hscode = ВПР4( _
+                hscode = VLookUp4( _
                             Cells(processing_row_num, article_col_num), _
                             vlookup_table_rng, _
                             vlookup_arg3, _
@@ -809,7 +827,7 @@ Attribute ПОИСК_ЧАСТИЧН.VB_ProcData.VB_Invoke_Func = "Й\n14"
                 
                 If Not IsError(hscode) And sel_col_num > 1 Then
                     description_31 = LCase( _
-                        ВПР4( _
+                        VLookUp4( _
                                 Cells(processing_row_num, article_col_num), _
                                 vlookup_table_rng, _
                                 vlookup_arg3, _
@@ -819,7 +837,7 @@ Attribute ПОИСК_ЧАСТИЧН.VB_ProcData.VB_Invoke_Func = "Й\n14"
                                           )
                     If sel_col_num > 2 Then
                         description_art = LCase( _
-                            ВПР4( _
+                            VLookUp4( _
                                 Cells(processing_row_num, article_col_num), _
                                 vlookup_table_rng, _
                                 vlookup_arg3, _
@@ -892,7 +910,8 @@ Attribute ПОИСК_ЧАСТИЧН.VB_ProcData.VB_Invoke_Func = "Й\n14"
     Next counter1
     
     t = Timer - t
-    MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec"
+    MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec", , _
+           "proc: поиск_частичн"
     
 End Sub
 
@@ -953,6 +972,7 @@ Private Sub paint_cells( _
 End Sub
 
 Public Sub нумерация_ячеек()
+Attribute нумерация_ячеек.VB_ProcData.VB_Invoke_Func = "й\n14"
 
 'Процедура позволяет нумеровать строки диапазона, в котором некоторые
 'строки скрыты (отфильтрованы). Нумерация производится только
@@ -996,4 +1016,106 @@ Public Sub нумерация_ячеек()
         End If
     Next
     
+End Sub
+
+Public Sub кириллик_в_латин()
+Attribute кириллик_в_латин.VB_ProcData.VB_Invoke_Func = "ф\n14"
+    
+'Процедура обрабатывает ячейки в выделенной области листа на предмет
+'наличия в текстовой строке (в ячейках) кириллических символов
+' "замаскированных" (т.е. визуально похожих) под латинские.
+'Найденные кириллические символы заменяются на соответствующие
+'латинские, а эти позиции внутри текстовой строки помечаются цветом
+'шрифта фуксия (fuchsia).
+
+'Назначение процедуры: если артикул содерит кириллические символы
+'похожие на латинские - поиск на сайтах (например, eu.mouser.com etc)
+'выдает отсутствие совпадений, тогда как с латинскими символами все
+'в порядке, поиск завершается успешно. Данная процедура предназначена
+'для решения этой проблемы.
+    
+    Dim latin As Variant
+    Dim cyril As Variant
+    Dim i As Double
+    Dim j As Double
+    Dim one_symbol As String
+    Dim find_flag As Boolean
+    Dim symbol_translit As String
+    Dim merged_text As String
+    Dim pos_reg() As Integer
+    Dim arr_counter As Integer
+    Dim native_font_cid As Integer
+    Dim t As Single
+
+    'русскую "И" на что менять на латинскую "N" или "U"?
+    'вопрос открытый. Есть и другие коллизии.
+    cyril = Array("а", "в", "с", "е", "к", "м", "н", _
+                  "о", "п", "р", "т", "и", "у", "х", _
+                  "А", "В", "С", "Е", "К", "М", "Н", _
+                  "О", "П", "Р", "Т", "И", "У", "Х")
+    latin = Array("a", "B", "c", "e", "k", "m", "H", _
+                  "o", "n", "p", "T", "u", "y", "x", _
+                  "A", "B", "C", "E", "K", "M", "H", _
+                  "O", "n", "P", "T", "U", "Y", "X")
+
+    t = Timer
+
+    For Each cell In Selection
+        If Not IsError(cell.Value) And _
+           Not cell.Rows.Hidden Then
+            arr_counter = 0
+            ReDim pos_reg(arr_counter)
+
+            For i = 1 To Len(cell.Value)
+                one_symbol = Mid(cell, i, 1)
+                find_flag = False
+                For j = LBound(cyril) To UBound(cyril)
+                    If cyril(j) = one_symbol Then
+                        symbol_translit = latin(j)
+                        find_flag = True
+                        Exit For
+                    End If
+                Next
+                If find_flag Or _
+                   ( _
+                     IsNull(cell.Font.Color) And _
+                     cell.Characters(i, 1).Font.ColorIndex = 7 _
+                    ) Then
+                    ReDim Preserve pos_reg(arr_counter)
+                    pos_reg(arr_counter) = i
+                    arr_counter = arr_counter + 1
+                End If
+                If find_flag Then
+                    merged_text = merged_text & symbol_translit
+                Else: merged_text = merged_text & one_symbol
+                    If native_font_cid = 0 And _
+                       cell.Characters(i, 1).Font.ColorIndex <> 7 Then _
+                        native_font_cid = cell.Characters(i, 1).Font.ColorIndex
+                End If
+            Next
+
+            cell.Value = merged_text
+            merged_text = Empty
+            If native_font_cid <> 0 Then
+                cell.Font.ColorIndex = native_font_cid
+                cell.Font.FontStyle = Regular
+            End If
+        
+            If native_font_cid = 0 Then
+                cell.Font.ColorIndex = 7
+                cell.Font.FontStyle = "Bold"
+            ElseIf arr_counter <> 0 Then
+                For Each itm In pos_reg
+                    cell.Characters(itm, 1).Font.ColorIndex = 7
+                    cell.Characters(itm, 1).Font.FontStyle = "Bold"
+                Next
+            End If
+            native_font_cid = 0
+        End If
+    Next
+
+    t = Timer - t
+    MsgBox "Готово." & " Время выполенния: " & Round(t, 1) & " sec", , _
+           "proc: кириллик_в_латин"
+
 End Sub
